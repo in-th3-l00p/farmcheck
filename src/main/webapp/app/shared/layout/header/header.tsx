@@ -73,8 +73,8 @@ const Header = (props: IHeaderProps) => {
             <Link href="/about" text="About us" />
           </Nav> 
           <Nav navbar>
-            <Link href="/accout/login" text="Login" />
-            <Link href="/accout/register" text="Register" />
+            <Link href="/account/login" text="Login" />
+            <Link href="/account/register" text="Register" />
           </Nav>
         </Collapse>
       </Navbar>
