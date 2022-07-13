@@ -2,8 +2,8 @@ import './header.scss';
 
 import React, { useState } from 'react';
 import { Translate, Storage } from 'react-jhipster';
-import { Navbar, Nav, NavbarToggler, Collapse } from 'reactstrap';
-import LoadingBar from 'react-redux-loading-bar';
+import { Navbar, NavbarToggler, Collapse, Nav, NavItem, NavLink, NavbarBrand, Container  } from 'reactstrap';
+// import LoadingBar from 'react-redux-loading-bar';
 
 import { Home, Brand } from './header-components';
 import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu } from '../menus';
@@ -18,6 +18,23 @@ export interface IHeaderProps {
   isOpenAPIEnabled: boolean;
   currentLocale: string;
 }
+
+export interface LinkProps {
+  href: string;
+  text: string;
+}
+
+const Link = (props: LinkProps) => {
+  const navLinkStyle = { color: "#f2f2f2" }
+  return (
+    <NavItem>
+      <NavLink style={navLinkStyle} href={props.href}>
+        {props.text}
+      </NavLink>
+    </NavItem>
+  )
+}
+
 
 const Header = (props: IHeaderProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -45,25 +62,24 @@ const Header = (props: IHeaderProps) => {
 
   return (
     <div id="app-header">
-      {renderDevRibbon()}
-      <LoadingBar className="loading-bar" />
-      <Navbar data-cy="navbar" dark expand="md" fixed="top" className="jh-navbar">
-        <NavbarToggler aria-label="Menu" onClick={toggleMenu} />
-        <Brand />
+      <Navbar expand="md" dark={true}>
+        <NavbarBrand href="/">FarmCheck</NavbarBrand>
+        <NavbarToggler onClick={toggleMenu} />
         <Collapse isOpen={menuOpen} navbar>
-          <Nav id="header-tabs" className="ms-auto" navbar>
-            <Home />
-            {props.isAuthenticated && <EntitiesMenu />}
-            {props.isAuthenticated && props.isAdmin && (
-              <AdminMenu showOpenAPI={props.isOpenAPIEnabled} showDatabase={!props.isInProduction} />
-            )}
-            <LocaleMenu currentLocale={props.currentLocale} onClick={handleLocaleChange} />
-            <AccountMenu isAuthenticated={props.isAuthenticated} />
+          <Nav className="me-auto" navbar>
+            <Link href="/shop" text="Shop" />
+            <Link href="/download" text="Download" />
+            <Link href="/wiki" text="Crop wiki" />
+            <Link href="/about" text="About us" />
+          </Nav> 
+          <Nav navbar>
+            <Link href="/accout/login" text="Login" />
+            <Link href="/accout/register" text="Register" />
           </Nav>
         </Collapse>
       </Navbar>
     </div>
-  );
+  )
 };
 
 export default Header;
