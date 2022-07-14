@@ -1,10 +1,56 @@
 /* ==========================================================================
 Main page styles
 ========================================================================== */
-.hipster {
-  display: inline-block;
-  width: 100%;
-  height: 497px;
-  background: url('../../../content/images/jhipster_family_member_2.svg') no-repeat center top;
-  background-size: contain;
+
+$image-brightness: 60%;
+$image-saturation: 70%;
+.carousel-container {
+  position: relative;
+
+  .carousel-image {
+    // managing image sizing
+    object-fit: cover;
+    width: 100vw;
+    height: 40vh;
+
+    @media screen and (min-height: 800px) {
+      height: 80vh;
+    }
+
+    @media screen and (max-width: 660px) {
+      height: 40vh;
+    }
+
+    // visual settings
+    filter: brightness($image-brightness) saturate($image-saturation);
+  }
+
+  .carousel-text {
+    // so it is on top of the image
+    position: absolute;
+
+    // centering (old school)
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: #f2f2f2;
+
+    // sizing the text
+    h1 { font-size: 6rem; }
+    @media screen and (max-width: 680px) {
+      h1 { font-size: 4rem; }
+      h3 { font-size: 2rem; }
+    }
+
+    @media screen and (max-width: 440px) {
+      h1 { font-size: 3rem; }
+      h3 { font-size: 1.5rem; }
+    }
+
+    @media only screen and (max-width: 300px), (max-height: 650px) {
+      h1 { font-size: 1.75rem; }
+      h3 { font-size: 1rem; }
+    }
+  }
 }
