@@ -63,7 +63,7 @@ const Header = (props: IHeaderProps) => {
   return (
     <div id="app-header">
       <Navbar expand="md" dark={true}>
-        <NavbarBrand href="/">FarmCheck</NavbarBrand>
+        <NavbarBrand href="/" className="navbar-brand">FarmCheck</NavbarBrand>
         <NavbarToggler onClick={toggleMenu} />
         <Collapse isOpen={menuOpen} navbar>
           <Nav className="me-auto" navbar>

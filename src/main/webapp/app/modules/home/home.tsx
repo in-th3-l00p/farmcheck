@@ -1,7 +1,7 @@
 import './home.scss';
 
 import React from 'react';
-import { Carousel, Row, Col, Figure } from 'react-bootstrap';
+import { Carousel, Row, Col, Figure, Button } from 'react-bootstrap';
 import TextBox from "../../entities/textbox";
 
 interface FeaturesFigureProps {
@@ -18,8 +18,8 @@ const FeaturesFigure: React.FC<FeaturesFigureProps> = ({text, alt, src, children
         className="features-figure-image"
         src={src}
       />
-      <Figure.Caption className="text-center">
-        <h6>{text}</h6>
+      <Figure.Caption className="text-center feature-caption">
+        <h3>{text}</h3>
         {children}
       </Figure.Caption>
     </Figure>
@@ -47,14 +47,19 @@ export const Home = () => {
 
         <span className="carousel-text text-center">
           <h1 className="fw-bold">FarmCheck</h1>
-          <h3>Automatizam tot ce inseamna ferma</h3>
+          <h3 className="fw-light">Automatizam tot ce inseamna ferma</h3>
         </span>
       </div>
 
       {/* "about us" textbox */}
-      <TextBox title="About us" className="text-center">
-        <p className="about-text">We are the CyberTech Farmers</p>
-        <a className="carrot" href="https://en.wikipedia.org/wiki/Carrot">🥕</a>
+      <TextBox title="About us" className="text-center about">
+        <p className="about-text ">We are the CyberTech Farmers</p>
+        {/* <a className="carrot" href="https://en.wikipedia.org/wiki/Carrot">🥕</a> */}
+        <Button 
+          className="about-button" 
+          onClick={()=> window.open("https://www.facebook.com/FarmCheck-105867298851897", "_blank")}>
+            Learn more
+        </Button>
       </TextBox>
 
       {/* "features" textbox */}
@@ -62,7 +67,7 @@ export const Home = () => {
         <Row>
           <Col>
             <FeaturesFigure 
-              text="Surveillance" 
+              text="Surveillance"
               alt="surveillance picture"
               src={featuresImagesBasePath + "surveillance.jpg"}
             >

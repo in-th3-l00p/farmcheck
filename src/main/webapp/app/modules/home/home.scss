@@ -38,25 +38,66 @@ $image-saturation: 70%;
 
     // sizing the text
     h1 { font-size: 6rem; }
-    @media screen and (max-width: 680px) {
+    h3 { font-size: 2rem; }
+
+    @media screen and (max-width: 650px) {
       h1 { font-size: 4rem; }
-      h3 { font-size: 2rem; }
+      h3 { font-size: 1.75rem; }
     }
 
-    @media screen and (max-width: 440px) {
+    @media screen and (max-width: 450px) {
       h1 { font-size: 3rem; }
-      h3 { font-size: 1.5rem; }
+      h3 { font-size: 1.65rem; }
     }
 
     @media only screen and (max-width: 300px), (max-height: 650px) {
-      h1 { font-size: 1.75rem; }
-      h3 { font-size: 1rem; }
+      h1 { font-size: 2.5rem; }
+      h3 { font-size: 1.5rem; }
     }
   }
 }
+.about {
+  h2 { 
+    text-align: center; 
+    font-size: 3rem;
 
-.about-text {
-  font-size: 1.5rem;
+    @media screen and (max-width: 650px) {
+      font-size: 2.5rem;
+    }
+
+    @media screen and (max-width: 450px) {
+      font-size: 2rem;
+    }
+  }
+
+  .about-text {  
+    font-size: 1.75rem;
+  
+    @media screen and (max-width: 650px) {
+      font-size: 1.5rem;
+    }
+
+    @media screen and (max-width: 450px) {
+      font-size: 1.25rem;
+    }
+  }
+
+  .about-button {
+    background-color: #F2BF5E;
+    border: 0;
+    color: black;
+    border-radius: 15px;
+    font-weight: 500;
+    font-size: 1.75rem;
+
+    @media screen and (max-width: 650px) {
+      font-size: 1.5rem;
+    }
+
+    @media screen and (max-width: 450px) {
+      font-size: 1.25rem;
+    }
+  }
 }
 
 .carrot {
@@ -64,7 +105,28 @@ $image-saturation: 70%;
 }
 
 .features {
-  h2 { text-align: center; }
+  h2 { 
+    margin-bottom: 65px;
+    text-align: center; 
+    font-size: 3rem;
+
+    @media screen and (max-width: 650px) {
+      font-size: 2.5rem;
+    }
+
+    @media screen and (max-width: 450px) {
+      font-size: 2rem;
+    }
+  }
+
+  .feature-caption {
+    font-size: 1.25rem;
+    text-align: justify;
+
+    @media screen and (max-width: 650px) {
+      font-size: 1rem;
+    }
+  }
 
   .features-figure-image {
     // centers the image
@@ -72,7 +134,7 @@ $image-saturation: 70%;
     margin-left: auto;
     margin-right: auto;
 
-    border: 3px solid #F2BF5E;
+    border: 5px solid #F2BF5E;
     border-radius: 50%;
 
     // no stretch
@@ -81,12 +143,18 @@ $image-saturation: 70%;
     // sizing
     width: 150px;
     height: 150px;
-    @media screen and (max-width: 430px) {
+
+    @media screen and (max-width: 800px) {
+      width: 125px;
+      height: 125px;
+    }
+
+    @media screen and (max-width: 450px) {
       width: 100px;
       height: 100px;
     }
 
-    @media screen and (max-width: 320px) {
+    @media screen and (max-width: 380px) {
       width: 75px;
       height: 75px;
     }

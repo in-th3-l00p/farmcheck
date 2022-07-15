@@ -11,7 +11,7 @@ interface TextBoxProps {
 const TextBox: React.FC<TextBoxProps> = ({title, children, className}) => {
     return (
         <Container className={`text-box my-4 p-5 ${className}`}>
-            <h2 className="text-decoration-underline">{title}</h2> 
+            <h2>{title}</h2> 
             {children}
         </Container>
     )
