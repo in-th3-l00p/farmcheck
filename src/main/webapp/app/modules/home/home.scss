@@ -54,3 +54,46 @@ $image-saturation: 70%;
     }
   }
 }
+
+.about-text {
+  font-size: 1.5rem;
+}
+
+.carrot {
+  font-size: 10rem;
+}
+
+.features {
+  h2 { text-align: center; }
+
+  .features-figure-image {
+    // centers the image
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+    border: 3px solid #F2BF5E;
+    border-radius: 50%;
+
+    // no stretch
+    object-fit: cover;
+
+    // sizing
+    width: 150px;
+    height: 150px;
+    @media screen and (max-width: 430px) {
+      width: 100px;
+      height: 100px;
+    }
+
+    @media screen and (max-width: 320px) {
+      width: 75px;
+      height: 75px;
+    }
+
+    @media screen and (min-width: 1340px) {
+      width: 200px;
+      height: 200px;
+    }
+  }
+}
