@@ -13,39 +13,49 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
-eureka:
-  client:
-    enabled: false
-  instance:
-    appname: farmcheck
-    instanceId: farmcheck:${spring.application.instance-id:${random.value}}
-
 spring:
-  profiles:
-    # Uncomment the following line to enable tests against production database type rather than H2, using Testcontainers
-    #active: testcontainers
   application:
     name: farmcheck
-  cloud:
-    config:
-      enabled: false
 
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:h2:mem:farmcheck;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    name:
+    username:
+    password:
+    hikari:
+      auto-commit: false
   jackson:
     serialization:
       write-durations-as-timestamps: false
+  jpa:
+    database-platform: tech.jhipster.domain.util.FixedH2Dialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+      hibernate.hbm2ddl.auto: validate
+      hibernate.jdbc.time_zone: UTC
+      hibernate.query.fail_on_pagination_over_collection_fetch: true
   liquibase:
     contexts: test
-    url: jdbc:h2:mem:farmcheck;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
   mail:
     host: localhost
   main:
     allow-bean-definition-overriding: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   messages:
     basename: i18n/messages
-  r2dbc:
-    url: r2dbc:h2:mem:///farmcheck;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    username: r2dbc
-    password:
   task:
     execution:
       thread-name-prefix: farmcheck-task-
@@ -87,7 +97,7 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 (you can type `echo 'secret-key'|base64` on your command line)
-        base64-secret: N2I0NTMyNDM5NmI2ZDY2NzliODQ1ZGQxYjdmNWNmNDY0ODRhY2Q4M2E2ZTQ1MDVlZjMwMmMyM2UxMjRmN2JiNDQ2MDIyZTdkODNhNjdkZjJlMjJkYmU5NjIxN2QyYTI5OWZkMWJhYzlhNjBlZDBjZmU3NzRiM2MwNTY2YzdiNzQ=
+        base64-secret: YmUwMDZlYjFiZjk1YjZhMjAxZGU4Y2IyMDNkNjQ2MTlmN2ZiZjgxYzY2N2YwMmYyZGMwMDEyYTQ1YTNhOGU2NTk3MTgxMDZiNDYyYTc2MmQzZjNiZWQ3N2QwNjQ2Y2FhYWM5YWI1M2YzMjlkMjNmNjAyYTUwMTEwYzAxOTI3OGE=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
 # ===================================================================
