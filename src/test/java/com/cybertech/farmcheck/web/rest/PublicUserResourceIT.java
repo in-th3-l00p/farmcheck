@@ -14,7 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.cache.CacheManager;
+//import org.springframework.cache.CacheManager;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,8 +36,8 @@ class PublicUserResourceIT {
     @Autowired
     private EntityManager em;
 
-    @Autowired
-    private CacheManager cacheManager;
+    //@Autowired
+    //private CacheManager cacheManager;
 
     @Autowired
     private MockMvc restUserMockMvc;
@@ -46,8 +46,8 @@ class PublicUserResourceIT {
 
     @BeforeEach
     public void setup() {
-        cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).clear();
-        cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).clear();
+        //cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).clear();
+        //cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).clear();
     }
 
     @BeforeEach
