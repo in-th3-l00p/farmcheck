@@ -53,6 +53,9 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(length = 254, unique = true)
     private String email;
 
+    @Size(min = 10, max = 15)
+    private String phone;
+
     @NotNull
     @Column(nullable = false)
     private boolean activated = false;
@@ -137,6 +140,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.email = email;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -210,7 +221,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return getClass().hashCode();
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
         return "User{" +
@@ -218,10 +228,11 @@ public class User extends AbstractAuditingEntity implements Serializable {
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", email='" + email + '\'' +
-            ", imageUrl='" + imageUrl + '\'' +
-            ", activated='" + activated + '\'' +
+            ", phone='" + phone + '\'' +
+            ", activated=" + activated +
             ", langKey='" + langKey + '\'' +
+            ", imageUrl='" + imageUrl + '\'' +
             ", activationKey='" + activationKey + '\'' +
-            "}";
+            '}';
     }
 }
