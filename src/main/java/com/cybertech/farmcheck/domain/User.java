@@ -19,7 +19,7 @@ import org.hibernate.annotations.BatchSize;
  * A user.
  */
 @Entity
-@Table(name = "jhi_user")
+@Table(name = "users")
 public class User extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -84,12 +84,18 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-        name = "jhi_user_authority",
+        name = "user_authorities",
         joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") },
         inverseJoinColumns = { @JoinColumn(name = "authority_name", referencedColumnName = "name") }
     )
     @BatchSize(size = 20)
     private Set<Authority> authorities = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    private Set<FarmUsers> farms;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Order> orders;
 
     public Long getId() {
         return id;
@@ -202,6 +208,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public Set<FarmUsers> getFarms() {
+        return farms;
+    }
+
+    public void setFarms(Set<FarmUsers> farms) {
+        this.farms = farms;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
