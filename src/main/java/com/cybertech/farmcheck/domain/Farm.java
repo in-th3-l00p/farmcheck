@@ -35,6 +35,28 @@ import javax.validation.constraints.Size;
     @OneToMany(mappedBy = "farm")
     private Set<Order> orders;
 
+    @OneToMany(mappedBy = "farm")
+    private Set<Tasks> tasks;
+
+    @OneToMany(mappedBy = "farm")
+    private Set<Fields> fields;
+
+    public Set<Fields> getFields() {
+        return fields;
+    }
+
+    public void setFields(Set<Fields> fields) {
+        this.fields = fields;
+    }
+
+    public Set<Tasks> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<Tasks> tasks) {
+        this.tasks = tasks;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
