@@ -1,6 +1,7 @@
 package com.cybertech.farmcheck.domain;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -40,6 +41,17 @@ public class Order implements Serializable {
     @ManyToOne
     @JoinColumn(name = "farm_id")
     private Farm farm;
+
+    @OneToMany(mappedBy = "order")
+    private Set<OrderProducts> orderProducts;
+
+    public Set<OrderProducts> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(Set<OrderProducts> orderProducts) {
+        this.orderProducts = orderProducts;
+    }
 
     public String getTitle() {
         return title;

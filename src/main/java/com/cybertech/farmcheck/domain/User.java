@@ -97,6 +97,17 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @OneToMany(mappedBy = "user")
     private Set<Order> orders;
 
+    @OneToMany(mappedBy = "user")
+    private Set<UserTasks> userTasks;
+
+    public Set<UserTasks> getUserTasks() {
+        return userTasks;
+    }
+
+    public void setUserTasks(Set<UserTasks> userTasks) {
+        this.userTasks = userTasks;
+    }
+
     public Long getId() {
         return id;
     }
