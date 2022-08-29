@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "products")
-public class Products implements Serializable {
+public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,10 +36,10 @@ public class Products implements Serializable {
     @Column
     private Long stock;
 
-    @OneToMany(mappedBy = "products")
+    @OneToMany(mappedBy = "product")
     private Set<OrderProducts> orderProducts;
 
-    @OneToMany(mappedBy = "products")
+    @OneToMany(mappedBy = "product")
     private Set<ProductPhotos> productPhotos;
 
     public Set<ProductPhotos> getProductPhotos() {

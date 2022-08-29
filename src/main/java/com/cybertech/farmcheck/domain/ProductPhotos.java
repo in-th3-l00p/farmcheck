@@ -4,7 +4,6 @@ package com.cybertech.farmcheck.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.sql.Blob;
 
 @Entity
 @Table(name = "product_photos")
@@ -23,7 +22,7 @@ public class ProductPhotos implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Products products;
+    private Product product;
 
     public Byte[] getPhoto() {
         return photo;
@@ -33,11 +32,11 @@ public class ProductPhotos implements Serializable {
         this.photo = photo;
     }
 
-    public Products getProducts() {
-        return products;
+    public Product getProducts() {
+        return product;
     }
 
-    public void setProducts(Products products) {
-        this.products = products;
+    public void setProducts(Product product) {
+        this.product = product;
     }
 }

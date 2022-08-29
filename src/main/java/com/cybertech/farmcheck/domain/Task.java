@@ -5,12 +5,11 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "tasks")
-public class Tasks implements Serializable {
+public class Task implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -43,17 +42,17 @@ public class Tasks implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "field_id")
-    private Fields fields;
+    private Field field;
 
-    @OneToMany(mappedBy = "tasks")
+    @OneToMany(mappedBy = "task")
     private Set<UserTasks> userTasks;
 
-    public Fields getFields() {
-        return fields;
+    public Field getFields() {
+        return field;
     }
 
-    public void setFields(Fields fields) {
-        this.fields = fields;
+    public void setFields(Field field) {
+        this.field = field;
     }
 
     public Set<UserTasks> getUserTasks() {
@@ -122,7 +121,7 @@ public class Tasks implements Serializable {
             ", importance=" + importance +
             ", deadline=" + deadline +
             ", farm=" + farm +
-            ", field=" + fields +
+            ", field=" + field +
             '}';
     }
 

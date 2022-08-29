@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "sensors")
-public class Sensors implements Serializable {
+public class Sensor implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,7 +27,7 @@ public class Sensors implements Serializable {
     @Column
     private Double longitude;
 
-    @OneToMany(mappedBy = "sensors")
+    @OneToMany(mappedBy = "sensor")
     private Set<FieldSensors> fieldSensors;
 
     public Short getType() {

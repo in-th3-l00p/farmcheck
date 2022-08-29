@@ -27,7 +27,7 @@ public class OrderProducts implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Products products;
+    private Product product;
 
     public Long getQuantity() {
         return quantity;
@@ -53,12 +53,12 @@ public class OrderProducts implements Serializable {
         this.order = order;
     }
 
-    public Products getProducts() {
-        return products;
+    public Product getProducts() {
+        return product;
     }
 
-    public void setProducts(Products products) {
-        this.products = products;
+    public void setProducts(Product product) {
+        this.product = product;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class OrderProducts implements Serializable {
             ", quantity=" + quantity +
             ", price_then=" + price_then +
             ", order=" + order +
-            ", products=" + products +
+            ", products=" + product +
             '}';
     }
 }

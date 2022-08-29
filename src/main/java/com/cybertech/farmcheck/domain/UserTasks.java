@@ -19,7 +19,7 @@ public class UserTasks implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "task_id")
-    private Tasks tasks;
+    private Task task;
 
     public User getUser() {
         return user;
@@ -29,11 +29,11 @@ public class UserTasks implements Serializable {
         this.user = user;
     }
 
-    public Tasks getTasks() {
-        return tasks;
+    public Task getTasks() {
+        return task;
     }
 
-    public void setTasks(Tasks tasks) {
-        this.tasks = tasks;
+    public void setTasks(Task task) {
+        this.task = task;
     }
 }

@@ -4,13 +4,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name = "seeds")
-public class Seeds implements Serializable {
+public class Seed implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,7 +37,7 @@ public class Seeds implements Serializable {
     @Column
     private Integer seed_per_m2;
 
-    @OneToMany(mappedBy = "seeds")
+    @OneToMany(mappedBy = "seed")
     private Set<FieldSeeds> fieldSeeds;
 
     public String getName() {

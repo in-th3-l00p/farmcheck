@@ -2,7 +2,6 @@ package com.cybertech.farmcheck.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.sql.Date;
 
@@ -34,11 +33,11 @@ public class FieldSeeds implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "field_id")
-    private Fields fields;
+    private Field field;
 
     @ManyToOne
     @JoinColumn(name = "seed_id")
-    private Seeds seeds;
+    private Seed seed;
 
     public Date getPlanting_date() {
         return planting_date;
@@ -72,20 +71,20 @@ public class FieldSeeds implements Serializable {
         this.notes = notes;
     }
 
-    public Fields getFields() {
-        return fields;
+    public Field getFields() {
+        return field;
     }
 
-    public void setFields(Fields fields) {
-        this.fields = fields;
+    public void setFields(Field field) {
+        this.field = field;
     }
 
-    public Seeds getSeeds() {
-        return seeds;
+    public Seed getSeeds() {
+        return seed;
     }
 
-    public void setSeeds(Seeds seeds) {
-        this.seeds = seeds;
+    public void setSeeds(Seed seed) {
+        this.seed = seed;
     }
 
     @Override
@@ -96,8 +95,8 @@ public class FieldSeeds implements Serializable {
             ", harvest_date=" + harvest_date +
             ", rating=" + rating +
             ", notes='" + notes + '\'' +
-            ", fields=" + fields +
-            ", seeds=" + seeds +
+            ", fields=" + field +
+            ", seeds=" + seed +
             '}';
     }
 }

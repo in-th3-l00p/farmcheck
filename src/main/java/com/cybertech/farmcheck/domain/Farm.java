@@ -36,24 +36,24 @@ import javax.validation.constraints.Size;
     private Set<Order> orders;
 
     @OneToMany(mappedBy = "farm")
-    private Set<Tasks> tasks;
+    private Set<Task> tasks;
 
     @OneToMany(mappedBy = "farm")
-    private Set<Fields> fields;
+    private Set<Field> fields;
 
-    public Set<Fields> getFields() {
+    public Set<Field> getFields() {
         return fields;
     }
 
-    public void setFields(Set<Fields> fields) {
+    public void setFields(Set<Field> fields) {
         this.fields = fields;
     }
 
-    public Set<Tasks> getTasks() {
+    public Set<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Set<Tasks> tasks) {
+    public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
     }
 

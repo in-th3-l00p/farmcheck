@@ -6,7 +6,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "fields")
-public class Fields implements Serializable {
+public class Field implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -18,16 +18,16 @@ public class Fields implements Serializable {
     @JoinColumn(name = "farm_id")
     private Farm farm;
 
-    @OneToMany(mappedBy = "fields")
-    private Set<Tasks> tasks;
+    @OneToMany(mappedBy = "field")
+    private Set<Task> tasks;
 
-    @OneToMany(mappedBy = "fields")
+    @OneToMany(mappedBy = "field")
     private Set<FieldCorners> fieldCorners;
 
-    @OneToMany(mappedBy = "fields")
+    @OneToMany(mappedBy = "field")
     private Set<FieldSeeds> fieldSeeds;
 
-    @OneToMany(mappedBy = "fields")
+    @OneToMany(mappedBy = "field")
     private Set<FieldSensors> fieldSensors;
 
     public Set<FieldSensors> getFieldSensors() {
@@ -54,11 +54,11 @@ public class Fields implements Serializable {
         this.fieldCorners = fieldCorners;
     }
 
-    public Set<Tasks> getTasks() {
+    public Set<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(Set<Tasks> tasks) {
+    public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
     }
 

@@ -25,11 +25,11 @@ public class FieldSensors implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "field_id")
-    private Fields fields;
+    private Field field;
 
     @ManyToOne
     @JoinColumn(name = "sensor_id")
-    private Sensors sensors;
+    private Sensor sensor;
 
     public Time getTimestamp() {
         return timestamp;
@@ -47,20 +47,20 @@ public class FieldSensors implements Serializable {
         this.value = value;
     }
 
-    public Fields getFields() {
-        return fields;
+    public Field getFields() {
+        return field;
     }
 
-    public void setFields(Fields fields) {
-        this.fields = fields;
+    public void setFields(Field field) {
+        this.field = field;
     }
 
-    public Sensors getSensors() {
-        return sensors;
+    public Sensor getSensors() {
+        return sensor;
     }
 
-    public void setSensors(Sensors sensors) {
-        this.sensors = sensors;
+    public void setSensors(Sensor sensor) {
+        this.sensor = sensor;
     }
 
     @Override
@@ -69,8 +69,8 @@ public class FieldSensors implements Serializable {
             "id=" + id +
             ", timestamp=" + timestamp +
             ", value=" + value +
-            ", fields=" + fields +
-            ", sensors=" + sensors +
+            ", fields=" + field +
+            ", sensors=" + sensor +
             '}';
     }
 }

@@ -70,7 +70,7 @@ out/
 ######################
 .vscode/*
 !.vscode/settings.json
-!.vscode/tasks.json
+!.vscode/task.json
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace

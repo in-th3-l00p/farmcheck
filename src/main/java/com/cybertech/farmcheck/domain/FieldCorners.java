@@ -3,7 +3,6 @@ package com.cybertech.farmcheck.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 
 @Entity
 @Table(name = "field_corners")
@@ -25,7 +24,7 @@ public class FieldCorners implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "field_id")
-    private Fields fields;
+    private Field field;
 
     public Double getLatitude() {
         return latitude;
@@ -43,12 +42,12 @@ public class FieldCorners implements Serializable {
         this.longitude = longitude;
     }
 
-    public Fields getFields() {
-        return fields;
+    public Field getFields() {
+        return field;
     }
 
-    public void setFields(Fields fields) {
-        this.fields = fields;
+    public void setFields(Field field) {
+        this.field = field;
     }
 
     @Override
@@ -57,7 +56,7 @@ public class FieldCorners implements Serializable {
             "id=" + id +
             ", latitude=" + latitude +
             ", longitude=" + longitude +
-            ", fields=" + fields +
+            ", fields=" + field +
             '}';
     }
 
