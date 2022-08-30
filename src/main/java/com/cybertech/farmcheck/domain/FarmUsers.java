@@ -24,6 +24,12 @@ public class FarmUsers implements Serializable {
     @Column
     private Short role;
 
+    public FarmUsers(User user, Farm farm, Short role) {
+        this.user = user;
+        this.farm = farm;
+        this.role = role;
+    }
+
     public User getUser() {
         return user;
     }

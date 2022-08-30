@@ -41,6 +41,11 @@ import javax.validation.constraints.Size;
     @OneToMany(mappedBy = "farm")
     private Set<Field> fields;
 
+    public Farm(String name, byte[] image) {
+        this.name = name;
+        this.image = image;
+    }
+
     public Set<Field> getFields() {
         return fields;
     }
