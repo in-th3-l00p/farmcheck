@@ -1,5 +1,6 @@
 package com.cybertech.farmcheck.web.rest;
 
+import com.cybertech.farmcheck.service.UserNotFoundException;
 import com.cybertech.farmcheck.service.UserService;
 import com.cybertech.farmcheck.service.dto.UserDTO;
 import java.util.*;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +50,22 @@ public class PublicUserResource {
         final Page<UserDTO> page = userService.getAllPublicUsers(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    /**
+     * {@code GET /user} : get the user that has the login given as param - calling this is allowed for everyone.
+     * @param login user's login
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body of the user.
+     */
+    @GetMapping("/user")
+    public ResponseEntity<UserDTO> getPublicUserById(@Param("login") String login) {
+        log.debug("REST request to get a public user by id");
+        final Optional<UserDTO> userDTO = userService.getPublicUserByLogin(login);
+        return ResponseEntity.ok(
+            userDTO.orElseThrow(
+                () -> new UserNotFoundException(login)
+            )
+        );
     }
 
     private boolean onlyContainsAllowedProperties(Pageable pageable) {

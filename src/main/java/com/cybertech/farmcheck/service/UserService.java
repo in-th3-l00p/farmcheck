@@ -286,6 +286,12 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
+    public Optional<UserDTO> getPublicUserByLogin(String login) {
+        Optional<User> user = userRepository.findOneByLogin(login);
+        return user.map(UserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthoritiesByLogin(String login) {
         return userRepository.findOneWithAuthoritiesByLogin(login);
     }
