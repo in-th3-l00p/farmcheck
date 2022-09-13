@@ -46,6 +46,9 @@ import javax.validation.constraints.Size;
         this.image = image;
     }
 
+    public Farm() {
+    }
+
     public Set<Field> getFields() {
         return fields;
     }

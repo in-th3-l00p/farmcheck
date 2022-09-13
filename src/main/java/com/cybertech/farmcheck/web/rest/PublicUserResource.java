@@ -1,6 +1,6 @@
 package com.cybertech.farmcheck.web.rest;
 
-import com.cybertech.farmcheck.service.UserNotFoundException;
+import com.cybertech.farmcheck.service.exception.UserNotFoundException;
 import com.cybertech.farmcheck.service.UserService;
 import com.cybertech.farmcheck.service.dto.UserDTO;
 import java.util.*;

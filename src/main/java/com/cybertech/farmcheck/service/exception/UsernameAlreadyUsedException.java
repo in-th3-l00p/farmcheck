@@ -1,4 +1,4 @@
-package com.cybertech.farmcheck.service;
+package com.cybertech.farmcheck.service.exception;
 
 public class UsernameAlreadyUsedException extends RuntimeException {
 

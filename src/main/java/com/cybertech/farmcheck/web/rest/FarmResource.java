@@ -1,39 +1,47 @@
 package com.cybertech.farmcheck.web.rest;
 
+import com.cybertech.farmcheck.service.exception.UnauthenticatedException;
 import com.cybertech.farmcheck.domain.Farm;
 import com.cybertech.farmcheck.security.SecurityUtils;
 import com.cybertech.farmcheck.service.FarmService;
+import com.cybertech.farmcheck.service.exception.UserNotFoundException;
 import com.cybertech.farmcheck.service.dto.FarmDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/farms")
 public class FarmResource {
-    @Autowired
-    private FarmService farmService;
+    private final FarmService farmService;
 
-    @GetMapping("/all")
-    public ResponseEntity<?> getAllFarms() {
-        List<Farm> farms = farmService.findAll();
-        return ResponseEntity.ok(farms);
+    @Autowired
+    public FarmResource(FarmService farmService) {
+        this.farmService = farmService;
     }
 
-    @GetMapping("/create")
-    public ResponseEntity<?> createFarm(@RequestBody FarmDTO farmDTO){
-        try{
-            String userLogin = SecurityUtils.getCurrentUserLogin().get();
-            farmService.create(farmDTO,userLogin);
-            return ResponseEntity.ok("Farm created successfully!");
-        }
-        catch (Exception e){
-            return ResponseEntity.badRequest().body("Error during creation of the farm");
-        }
+    @GetMapping
+    public ResponseEntity<List<Farm>> getUserFarms()
+        throws UnauthenticatedException, UserNotFoundException
+    {
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(UnauthenticatedException::new);
+
+        return ResponseEntity.ok(
+            farmService.getUserFarms(userLogin)
+        );
+    }
+
+    @PostMapping
+    public void createFarm(@RequestBody FarmDTO farmDTO)
+        throws UnauthenticatedException, UserNotFoundException
+    {
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(UnauthenticatedException::new);
+        farmService.create(farmDTO, userLogin);
     }
 }
