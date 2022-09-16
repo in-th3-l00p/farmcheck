@@ -1,8 +1,15 @@
 package com.cybertech.farmcheck.service.dto;
 
+import com.cybertech.farmcheck.domain.Farm;
+
 public class FarmDTO {
     private String name;
     private byte[] image;
+
+    public FarmDTO(Farm farm){
+        this.name = farm.getName();
+        this.image = farm.getImage();
+    }
 
     public String getName() {
         return name;

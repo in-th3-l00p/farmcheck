@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FarmService {
@@ -31,12 +32,12 @@ public class FarmService {
         this.farmUsersRepository = farmUsersRepository;
     }
 
-    public List<Farm> getUserFarms(String userLogin) throws UserNotFoundException {
+    public List<FarmDTO> getUserFarms(String userLogin) throws UserNotFoundException {
         userRepository
             .findOneByLogin(userLogin)
             .orElseThrow(() -> new UserNotFoundException(userLogin));
 
-        return farmRepository.findAllByUserLogin(userLogin);
+            return farmRepository.findAllByUserLogin(userLogin).stream().map(FarmDTO::new).collect(Collectors.toList());
     }
 
     public void create(

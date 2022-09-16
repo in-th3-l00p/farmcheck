@@ -23,7 +23,7 @@ public class FarmResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Farm>> getUserFarms()
+    public ResponseEntity<List<FarmDTO>> getUserFarms()
         throws UnauthenticatedException, UserNotFoundException
     {
         String userLogin = SecurityUtils
