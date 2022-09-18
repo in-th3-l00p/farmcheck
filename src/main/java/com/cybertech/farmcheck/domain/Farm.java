@@ -1,11 +1,11 @@
 package com.cybertech.farmcheck.domain;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Set;
 
 /**
  * A farm.
@@ -29,7 +29,11 @@ import javax.validation.constraints.Size;
     @Column
     private byte[] image;
 
-    @OneToMany(mappedBy = "farm")
+    @OneToMany(
+        mappedBy = "farm",
+        fetch = FetchType.EAGER,
+        cascade = CascadeType.REMOVE
+    )
     private Set<FarmUsers> users;
 
     @OneToMany(mappedBy = "farm")

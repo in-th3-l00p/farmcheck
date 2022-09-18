@@ -1,7 +1,7 @@
 package com.cybertech.farmcheck.domain;
 
-import java.io.Serializable;
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "farm_users")
@@ -13,11 +13,11 @@ public class FarmUsers implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name =  "farm_id")
     private Farm farm;
 

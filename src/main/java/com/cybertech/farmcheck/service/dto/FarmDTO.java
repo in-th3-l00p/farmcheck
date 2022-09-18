@@ -6,6 +6,9 @@ public class FarmDTO {
     private String name;
     private byte[] image;
 
+    public FarmDTO() {
+    }
+
     public FarmDTO(Farm farm){
         this.name = farm.getName();
         this.image = farm.getImage();

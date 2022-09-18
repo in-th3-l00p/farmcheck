@@ -9,17 +9,11 @@ import com.cybertech.farmcheck.security.AuthoritiesConstants;
 import com.cybertech.farmcheck.security.SecurityUtils;
 import com.cybertech.farmcheck.service.dto.AdminUserDTO;
 import com.cybertech.farmcheck.service.dto.UserDTO;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import com.cybertech.farmcheck.service.exception.EmailAlreadyUsedException;
 import com.cybertech.farmcheck.service.exception.InvalidPasswordException;
 import com.cybertech.farmcheck.service.exception.UsernameAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,6 +21,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.security.RandomUtil;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Service class for managing users.
@@ -329,11 +331,4 @@ public class UserService {
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
-
-    /*private void clearUserCaches(User user) {
-        Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE)).evict(user.getLogin());
-        if (user.getEmail() != null) {
-            Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
-        }
-    }*/
 }
