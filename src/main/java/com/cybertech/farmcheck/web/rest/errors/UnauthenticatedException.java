@@ -1,4 +1,4 @@
-package com.cybertech.farmcheck.service.exception;
+package com.cybertech.farmcheck.web.rest.errors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

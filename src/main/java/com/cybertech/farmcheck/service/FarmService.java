@@ -8,6 +8,7 @@ import com.cybertech.farmcheck.repository.FarmUsersRepository;
 import com.cybertech.farmcheck.repository.UserRepository;
 import com.cybertech.farmcheck.service.dto.FarmDTO;
 import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
+import com.cybertech.farmcheck.service.exception.UserAccessDeniedException;
 import com.cybertech.farmcheck.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,16 +65,18 @@ public class FarmService {
     }
 
     /**
-     * Checks if a user belongs to a farm.
+     * Checks if a user has access to a farm.
      * @param farm the farm object
      * @param userLogin user's login
-     * @return true if the user is part of the farm
+     * @throws UserAccessDeniedException if the user has no access to the farm
      */
-    public boolean isUserInFarm(Farm farm, String userLogin) {
+    public void checkUserAccess(Farm farm, String userLogin)
+        throws UserAccessDeniedException
+    {
         for (FarmUsers farmUsers : farm.getUsers())
             if (Objects.equals(farmUsers.getUser().getLogin(), userLogin))
-                return true;
-        return false;
+                return;
+        throw new UserAccessDeniedException(userLogin, farm.getId());
     }
 
     /**
