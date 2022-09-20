@@ -47,18 +47,18 @@ public class FarmResource {
 
     /**
      * {@code GET /api/farms/data} : get a farm
-     * @param farmName the name of the farm
+     * @param farmId farm's id
      * @return {@link ResponseEntity<FarmDTO>} with status {@code 200 {OK}}, or status {@code 400 (BAD_REQUEST)}
      */
     @GetMapping("/data")
     public ResponseEntity<?> getFarm(
-        @RequestParam("farmName") String farmName
+        @RequestParam("farmId") Long farmId
     ) throws UnauthenticatedException, FarmNotFoundException {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
 
-        Farm farm = farmService.getFarmByName(farmName);
+        Farm farm = farmService.getFarm(farmId);
         if (farmService.isUserInFarm(farm, userLogin))
             return ResponseEntity.ok(new FarmDTO(farm));
         return userNotInFarm;
@@ -66,20 +66,20 @@ public class FarmResource {
 
     /**
      * {@code GET /api/farms/users} : get the users of a farm
-     * @param farmName the name of the farm
+     * @param farmId farm's id
      * @return the {@link ResponseEntity<List<UserDTO>>} of the farm's users with {@code 200 (OK)}, or status {@code 400 (BAD_REQUEST)}
      * @throws UnauthenticatedException with status {@code 401 (UNAUTHORIZED)}
      * @throws FarmNotFoundException if the given farm doesn't exist, with status {@code 404 (NOT FOUND)}
      */
     @GetMapping("/users")
     public ResponseEntity<?> getFarmUsers(
-        @RequestParam("farmName") String farmName
+        @RequestParam("farmId") Long farmId
     ) throws UnauthenticatedException, FarmNotFoundException {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
 
-        Farm farm = farmService.getFarmByName(farmName);
+        Farm farm = farmService.getFarm(farmId);
         if (farmService.isUserInFarm(farm, userLogin))
             return ResponseEntity.ok(
                 farm.getUsers().stream()
@@ -111,7 +111,7 @@ public class FarmResource {
 
     /**
      * {@code PUT /api/farms/update} : updates a farm record
-     * @param farmName the updated farm's name
+     * @param farmId farm's id
      * @param farmDTO new farm fields
      * @return {@link ResponseEntity<String>} with status {@code 200 (OK)}
      * @throws UnauthenticatedException if the client is unauthenticated, with status {@code 401 (NOT AUTHORIZED)}
@@ -119,14 +119,14 @@ public class FarmResource {
      */
     @PutMapping("/update")
     public ResponseEntity<?> updateFarm(
-        @RequestParam("farmName") String farmName,
+        @RequestParam("farmId") Long farmId,
         @RequestBody FarmDTO farmDTO
     ) throws UnauthenticatedException, FarmNotFoundException {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
 
-        Farm farm = farmService.getFarmByName(farmName);
+        Farm farm = farmService.getFarm(farmId);
         if (!farmService.isUserInFarm(farm, userLogin))
             return userNotInFarm;
 
@@ -139,20 +139,20 @@ public class FarmResource {
 
     /**
      * {@code DELETE /api/farms/delete} : deletes a farm record
-     * @param farmName the deleted farm's name
+     * @param farmId the deleted farm's id
      * @return {@link ResponseEntity<String>} with status {@code 200 (OK)}
      * @throws UnauthenticatedException if the client is unauthenticated, with status {@code 401 (NOT AUTHORIZED)}
      * @throws FarmNotFoundException if the farm doesn't exist, with status {@code 404 (NOT FOUND)}
      */
     @DeleteMapping("/delete")
     public ResponseEntity<?> deleteFarm(
-        @RequestParam("farmName") String farmName
+        @RequestParam("farmId") Long farmId
     ) throws UnauthenticatedException, FarmNotFoundException {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
 
-        Farm farm = farmService.getFarmByName(farmName);
+        Farm farm = farmService.getFarm(farmId);
         if (!farmService.isUserInFarm(farm, userLogin))
             return userNotInFarm;
 

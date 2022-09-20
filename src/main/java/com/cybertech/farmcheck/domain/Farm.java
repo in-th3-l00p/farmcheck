@@ -53,6 +53,10 @@ import java.util.Set;
     public Farm() {
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Set<Field> getFields() {
         return fields;
     }

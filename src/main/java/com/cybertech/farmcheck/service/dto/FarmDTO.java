@@ -3,6 +3,7 @@ package com.cybertech.farmcheck.service.dto;
 import com.cybertech.farmcheck.domain.Farm;
 
 public class FarmDTO {
+    private Long id;
     private String name;
     private byte[] image;
 
@@ -10,8 +11,17 @@ public class FarmDTO {
     }
 
     public FarmDTO(Farm farm){
+        this.id = farm.getId();
         this.name = farm.getName();
         this.image = farm.getImage();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

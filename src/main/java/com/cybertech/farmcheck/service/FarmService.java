@@ -35,23 +35,14 @@ public class FarmService {
     }
 
     /**
-     * Gets a {@link Farm} by its name.
-     * @param farmName the farm's name
+     * Gets a {@link Farm}.
+     * @param farmId farm's id
      * @return the Farm object if found
      * @throws FarmNotFoundException if the farm doesn't exist
      */
-    public Farm getFarmByName(String farmName) throws FarmNotFoundException {
-        return farmRepository.findByName(farmName)
-            .orElseThrow(() -> new FarmNotFoundException(farmName));
-    }
-
-    /**
-     * Gets all the users of a farm.
-     * @param farmName farm's name
-     * @return {@link List<User>} the list of users
-     */
-    public List<User> getUsersByName(String farmName) {
-        return farmRepository.findUsersByName(farmName);
+    public Farm getFarm(Long farmId) throws FarmNotFoundException {
+        return farmRepository.findById(farmId)
+            .orElseThrow(() -> new FarmNotFoundException(farmId));
     }
 
     /**
