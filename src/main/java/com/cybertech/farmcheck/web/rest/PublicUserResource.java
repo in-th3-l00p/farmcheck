@@ -4,14 +4,12 @@ import com.cybertech.farmcheck.domain.Farm;
 import com.cybertech.farmcheck.domain.User;
 import com.cybertech.farmcheck.security.SecurityUtils;
 import com.cybertech.farmcheck.service.FarmService;
-import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
-import com.cybertech.farmcheck.service.exception.UnauthenticatedException;
-import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
-import com.cybertech.farmcheck.service.exception.UserNotFoundException;
 import com.cybertech.farmcheck.service.UserService;
 import com.cybertech.farmcheck.service.dto.UserDTO;
-import java.util.*;
-import java.util.Collections;
+import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
+import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
+import com.cybertech.farmcheck.service.exception.UserNotFoundException;
+import com.cybertech.farmcheck.web.rest.errors.UnauthenticatedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -24,6 +22,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
+
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
