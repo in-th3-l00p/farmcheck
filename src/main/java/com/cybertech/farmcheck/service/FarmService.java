@@ -57,11 +57,16 @@ public class FarmService {
             .findOneByLogin(userLogin)
             .orElseThrow(() -> new UserNotFoundException(userLogin));
 
-        return farmRepository
+        List<FarmDTO> farms = farmRepository
             .findAllByUserLogin(userLogin)
             .stream()
             .map(FarmDTO::new)
             .collect(Collectors.toList());
+
+        for(FarmDTO farm : farms)
+            farm.setRole(farmUsersRepository.findFarmUsersByUserLoginAndFarmId(userLogin, farm.getId()).getRole());
+
+        return farms;
     }
 
     /**

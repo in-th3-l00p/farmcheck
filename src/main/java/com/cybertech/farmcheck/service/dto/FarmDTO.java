@@ -5,6 +5,8 @@ import com.cybertech.farmcheck.domain.Farm;
 public class FarmDTO {
     private Long id;
     private String name;
+
+    private Short role;
     private byte[] image;
 
     public FarmDTO() {
@@ -30,6 +32,14 @@ public class FarmDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Short getRole() {
+        return role;
+    }
+
+    public void setRole(Short role) {
+        this.role = role;
     }
 
     public byte[] getImage() {
