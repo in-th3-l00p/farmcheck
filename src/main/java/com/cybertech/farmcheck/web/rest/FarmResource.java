@@ -7,9 +7,9 @@ import com.cybertech.farmcheck.service.FarmService;
 import com.cybertech.farmcheck.service.dto.FarmDTO;
 import com.cybertech.farmcheck.service.dto.UserDTO;
 import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
-import com.cybertech.farmcheck.service.exception.UserAccessDeniedException;
+import com.cybertech.farmcheck.service.exception.UnauthenticatedException;
+import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
 import com.cybertech.farmcheck.service.exception.UserNotFoundException;
-import com.cybertech.farmcheck.web.rest.errors.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,15 +46,17 @@ public class FarmResource {
     /**
      * {@code GET /api/farms/data} : get a farm
      * @param farmId farm's id
-     * @return {@link ResponseEntity<FarmDTO>} with status {@code 200 {OK}}
-     * @throws UnauthenticatedException if the user isn't authenticated, with status {@code 401 (UNAUTHORIZED)}
-     * @throws UserAccessDeniedException if the user isn't authenticated, with status {@code 401 (UNAUTHORIZED)}
-     * @throws FarmNotFoundException if the farm doesn't exist, with status {@code 404 (NOT FOUND)}
+     * @return {@link ResponseEntity<FarmDTO>} with status {@code 200 {OK}}, or status {@code 400 (BAD_REQUEST)}
+     * @throws UserDeniedAccessException if the user doesn't have access to the farm, with status {@code 401 (NOT_AUTHORIZED)}
      */
     @GetMapping("/data")
     public FarmDTO getFarm(
         @RequestParam("farmId") Long farmId
-    ) throws UnauthenticatedException, UserAccessDeniedException, FarmNotFoundException {
+    ) throws
+        UnauthenticatedException,
+        FarmNotFoundException,
+        UserDeniedAccessException
+    {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
@@ -67,26 +69,29 @@ public class FarmResource {
     /**
      * {@code GET /api/farms/users} : get the users of a farm
      * @param farmId farm's id
-     * @return the {@link ResponseEntity<List<UserDTO>>} of the farm's users with {@code 200 (OK)}
+     * @return the {@link ResponseEntity<List<UserDTO>>} of the farm's users with {@code 200 (OK)}, or status {@code 400 (BAD_REQUEST)}
      * @throws UnauthenticatedException with status {@code 401 (UNAUTHORIZED)}
      * @throws FarmNotFoundException if the given farm doesn't exist, with status {@code 404 (NOT FOUND)}
-     * @throws UserAccessDeniedException if the user isn't authenticated, with status {@code 401 (UNAUTHORIZED)}
+     * @throws UserDeniedAccessException if the user doesn't have access to the farm, with status {@code 401 (NOT_AUTHORIZED)}
      */
     @GetMapping("/users")
     public List<UserDTO> getFarmUsers(
         @RequestParam("farmId") Long farmId
-    ) throws UnauthenticatedException, FarmNotFoundException, UserAccessDeniedException {
+    ) throws
+        UnauthenticatedException,
+        FarmNotFoundException,
+        UserDeniedAccessException
+    {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
 
         Farm farm = farmService.getFarm(farmId);
         farmService.checkUserAccess(farm, userLogin);
-
         return farm.getUsers().stream()
-            .map(FarmUsers::getUser)
-            .map(UserDTO::new)
-            .toList();
+                .map(FarmUsers::getUser)
+                .map(UserDTO::new)
+                .toList();
     }
 
     /**
@@ -97,30 +102,34 @@ public class FarmResource {
      * @throws UserNotFoundException if the user doesn't exist, with status {@code 404 (NOT FOUND)}
      */
     @PostMapping
-    public String createFarm(@RequestBody FarmDTO farmDTO)
+    public ResponseEntity<String> createFarm(@RequestBody FarmDTO farmDTO)
         throws UnauthenticatedException, UserNotFoundException
     {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
         farmService.create(farmDTO, userLogin);
-        return "Farm created.";
+        return ResponseEntity.ok("Farm created.");
     }
 
     /**
      * {@code PUT /api/farms/update} : updates a farm record
      * @param farmId farm's id
      * @param farmDTO new farm fields
-     * @return {@link ResponseEntity<String>} with status {@code 200 (OK)}
+     * @return {@code String} with status {@code 200 (OK)}
      * @throws UnauthenticatedException if the client is unauthenticated, with status {@code 401 (NOT AUTHORIZED)}
      * @throws FarmNotFoundException if the farm doesn't exist, with status {@code 404 (NOT FOUND)}
-     * @throws UserAccessDeniedException if the user isn't authenticated, with status {@code 401 (UNAUTHORIZED)}
+     * @throws UserDeniedAccessException if the user doesn't have access to the farm, with status {@code 401 (NOT_AUTHORIZED)}
      */
     @PutMapping("/update")
     public String updateFarm(
         @RequestParam("farmId") Long farmId,
         @RequestBody FarmDTO farmDTO
-    ) throws UnauthenticatedException, FarmNotFoundException, UserAccessDeniedException {
+    ) throws
+        UnauthenticatedException,
+        FarmNotFoundException,
+        UserDeniedAccessException
+    {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
@@ -141,19 +150,24 @@ public class FarmResource {
      * @return {@link ResponseEntity<String>} with status {@code 200 (OK)}
      * @throws UnauthenticatedException if the client is unauthenticated, with status {@code 401 (NOT AUTHORIZED)}
      * @throws FarmNotFoundException if the farm doesn't exist, with status {@code 404 (NOT FOUND)}
-     * @throws UserAccessDeniedException if the user isn't authenticated, with status {@code 401 (UNAUTHORIZED)}
+     * @throws UserDeniedAccessException if the user doesn't have access to the farm, with status {@code 401 (NOT_AUTHORIZED)}
      */
     @DeleteMapping("/delete")
-    public String deleteFarm(
+    public ResponseEntity<?> deleteFarm(
         @RequestParam("farmId") Long farmId
-    ) throws UnauthenticatedException, FarmNotFoundException, UserAccessDeniedException {
+    ) throws
+        UnauthenticatedException,
+        FarmNotFoundException,
+        UserDeniedAccessException
+    {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
 
         Farm farm = farmService.getFarm(farmId);
         farmService.checkUserAccess(farm, userLogin);
+
         farmService.delete(farm);
-        return "Farm deleted.";
+        return ResponseEntity.ok("Farm deleted.");
     }
 }

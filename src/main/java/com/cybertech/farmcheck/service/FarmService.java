@@ -8,7 +8,7 @@ import com.cybertech.farmcheck.repository.FarmUsersRepository;
 import com.cybertech.farmcheck.repository.UserRepository;
 import com.cybertech.farmcheck.service.dto.FarmDTO;
 import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
-import com.cybertech.farmcheck.service.exception.UserAccessDeniedException;
+import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
 import com.cybertech.farmcheck.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,18 +65,17 @@ public class FarmService {
     }
 
     /**
-     * Checks if a user has access to a farm.
+     * Checks if a user belongs to a farm.
      * @param farm the farm object
      * @param userLogin user's login
-     * @throws UserAccessDeniedException if the user has no access to the farm
      */
     public void checkUserAccess(Farm farm, String userLogin)
-        throws UserAccessDeniedException
+        throws UserDeniedAccessException
     {
         for (FarmUsers farmUsers : farm.getUsers())
             if (Objects.equals(farmUsers.getUser().getLogin(), userLogin))
                 return;
-        throw new UserAccessDeniedException(userLogin, farm.getId());
+        throw new UserDeniedAccessException(userLogin, farm.getId());
     }
 
     /**
@@ -98,6 +97,32 @@ public class FarmService {
         farmUsersRepository.save(
             new FarmUsers(creator, farm, (short)1)
         );
+    }
+
+    /**
+     * Adds a user to a farm.
+     *
+     * @param farm the farm object
+     * @param user the user object
+     * @param role the role of the user to the farm
+     */
+    public void addUserToFarm(Farm farm, User user, Short role) {
+        FarmUsers farmUsers = new FarmUsers(user, farm, role);
+        farmUsersRepository.save(farmUsers);
+    }
+
+    /**
+     * Removes a user from a farm.
+     * @param farm the farm object
+     * @param user the user object
+     */
+    public void removeUserFromFarm(Farm farm, User user) {
+        FarmUsers farmUsers = farmRepository
+            .findByFarmIdAndUserLogin(
+                farm.getId(),
+                user.getLogin()
+            );
+        farmUsersRepository.delete(farmUsers);
     }
 
     /**

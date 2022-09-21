@@ -2,8 +2,11 @@ package com.cybertech.farmcheck.service;
 
 import com.cybertech.farmcheck.config.Constants;
 import com.cybertech.farmcheck.domain.Authority;
+import com.cybertech.farmcheck.domain.Farm;
+import com.cybertech.farmcheck.domain.FarmUsers;
 import com.cybertech.farmcheck.domain.User;
 import com.cybertech.farmcheck.repository.AuthorityRepository;
+import com.cybertech.farmcheck.repository.FarmUsersRepository;
 import com.cybertech.farmcheck.repository.UserRepository;
 import com.cybertech.farmcheck.security.AuthoritiesConstants;
 import com.cybertech.farmcheck.security.SecurityUtils;
@@ -45,17 +48,21 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
+    private final FarmUsersRepository farmUsersRepository;
+
     //private final CacheManager cacheManager;
 
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
-        AuthorityRepository authorityRepository
+        AuthorityRepository authorityRepository,
+        FarmUsersRepository farmUsersRepository
         //,CacheManager cacheManager
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.farmUsersRepository = farmUsersRepository;
         //this.cacheManager = cacheManager;
     }
 
