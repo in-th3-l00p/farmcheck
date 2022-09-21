@@ -32,9 +32,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/farmcheck?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
-    username: root
-    password: test12345
+    url: jdbc:mysql://mysql8001.site4now.net/db_a873a4_farmck
+    username: a873a4_farmck
+    password: FarmCheck69
     hikari:
       poolName: Hikari
       auto-commit: false
