@@ -45,6 +45,14 @@ import java.util.Set;
     @OneToMany(mappedBy = "farm")
     private Set<Field> fields;
 
+    @OneToMany(
+        mappedBy = "farm",
+        fetch = FetchType.EAGER,
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
+    private Set<Message> messages;
+
     public Farm(String name, byte[] image) {
         this.name = name;
         this.image = image;
@@ -107,6 +115,14 @@ import java.util.Set;
 
     public void setOrders(Set<Order> orders) {
         this.orders = orders;
+    }
+
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
     }
 
     @Override

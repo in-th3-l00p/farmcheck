@@ -2,9 +2,11 @@ package com.cybertech.farmcheck.service;
 
 import com.cybertech.farmcheck.domain.Farm;
 import com.cybertech.farmcheck.domain.FarmUsers;
+import com.cybertech.farmcheck.domain.Message;
 import com.cybertech.farmcheck.domain.User;
 import com.cybertech.farmcheck.repository.FarmRepository;
 import com.cybertech.farmcheck.repository.FarmUsersRepository;
+import com.cybertech.farmcheck.repository.MessageRepository;
 import com.cybertech.farmcheck.repository.UserRepository;
 import com.cybertech.farmcheck.service.dto.FarmDTO;
 import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
@@ -23,16 +25,19 @@ public class FarmService {
     private final FarmRepository farmRepository;
     private final UserRepository userRepository;
     private final FarmUsersRepository farmUsersRepository;
+    private final MessageRepository messageRepository;
 
     @Autowired
     public FarmService(
         FarmRepository farmRepository,
         UserRepository userRepository,
-        FarmUsersRepository farmUsersRepository
+        FarmUsersRepository farmUsersRepository,
+        MessageRepository messageRepository
     ) {
         this.farmRepository = farmRepository;
         this.userRepository = userRepository;
         this.farmUsersRepository = farmUsersRepository;
+        this.messageRepository = messageRepository;
     }
 
     /**
@@ -114,6 +119,24 @@ public class FarmService {
     public void addUserToFarm(Farm farm, User user, Short role) {
         FarmUsers farmUsers = new FarmUsers(user, farm, role);
         farmUsersRepository.save(farmUsers);
+    }
+
+    /**
+     * Adds a message to a farm.
+     * @param message the message object
+     * @return the {@link Message} saved in the db
+     */
+    public Message addMessage(Message message) {
+        return messageRepository.save(message);
+    }
+
+    /**
+     * Gets all the messages of a farm
+     * @param farmId the id of the farm
+     * @return the {@link List<Message>} sorted by their send date
+     */
+    public List<Message> getFarmMessages(Long farmId) {
+        return messageRepository.findByFarmId(farmId);
     }
 
     /**

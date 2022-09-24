@@ -1,13 +1,13 @@
 package com.cybertech.farmcheck.config;
 
-import com.cybertech.farmcheck.security.*;
-import com.cybertech.farmcheck.security.jwt.*;
+import com.cybertech.farmcheck.security.AuthoritiesConstants;
+import com.cybertech.farmcheck.security.jwt.JWTConfigurer;
+import com.cybertech.farmcheck.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -91,6 +91,7 @@ public class SecurityConfiguration {
             .antMatchers("/management/info").permitAll()
             .antMatchers("/management/prometheus").permitAll()
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
+            .antMatchers("/ws").authenticated()
         .and()
             .httpBasic()
         .and()
