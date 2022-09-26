@@ -69,7 +69,15 @@ public class FarmService {
             .collect(Collectors.toList());
 
         for(FarmDTO farm : farms)
-            farm.setRole(farmUsersRepository.findFarmUsersByUserLoginAndFarmId(userLogin, farm.getId()).getRole());
+            farm.setRole(
+                farmUsersRepository
+                    .findFarmUsersByUserLoginAndFarmId(
+                        userLogin,
+                        farm.getId()
+                    )
+                    .get()
+                    .getRole()
+            );
 
         return farms;
     }

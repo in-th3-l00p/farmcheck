@@ -75,7 +75,7 @@ public class PublicUserResource {
             .getUserWithAuthoritiesByLogin(userLogin)
             .orElseThrow(() -> new UserNotFoundException(userLogin));
 
-        farmService.addUserToFarm(farm, user, (short)2);
+        farmService.addUserToFarm(farm, user, (short)3);
 
         // checking if the user has access to the farm
         return "User added";
@@ -105,13 +105,14 @@ public class PublicUserResource {
                 .body("You cannot remove yourself");
         }
 
-        // todo privileges check
-
         Farm farm = farmService.getFarm(farmId);
         farmService.checkUserAccess(farm, authenticatedUserLogin);
         User user = userService
             .getUserWithAuthoritiesByLogin(userLogin)
             .orElseThrow(() -> new UserNotFoundException(userLogin));
+        if (userService.getFarmRole(user, farmId) == 3)
+            throw new UserDeniedAccessException(userLogin, farmId);
+
         farmService.removeUserFromFarm(farm, user);
         return ResponseEntity.ok("User removed.");
     }

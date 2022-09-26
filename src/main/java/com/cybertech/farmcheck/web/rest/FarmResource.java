@@ -1,15 +1,18 @@
 package com.cybertech.farmcheck.web.rest;
 
 import com.cybertech.farmcheck.domain.Farm;
-import com.cybertech.farmcheck.domain.FarmUsers;
+import com.cybertech.farmcheck.domain.User;
 import com.cybertech.farmcheck.security.SecurityUtils;
 import com.cybertech.farmcheck.service.FarmService;
+import com.cybertech.farmcheck.service.UserService;
 import com.cybertech.farmcheck.service.dto.FarmDTO;
+import com.cybertech.farmcheck.service.dto.FarmUserDTO;
 import com.cybertech.farmcheck.service.dto.UserDTO;
 import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
 import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
 import com.cybertech.farmcheck.service.exception.UserNotFoundException;
 import com.cybertech.farmcheck.web.rest.errors.UnauthenticatedException;
+import com.cybertech.farmcheck.web.rest.vm.FarmUserRoleVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +24,15 @@ import java.util.List;
 public class FarmResource {
     private final FarmService farmService;
 
+    private final UserService userService;
+
     @Autowired
-    public FarmResource(FarmService farmService) {
+    public FarmResource(
+        FarmService farmService,
+        UserService userService
+    ) {
         this.farmService = farmService;
+        this.userService = userService;
     }
 
     /**
@@ -60,10 +69,15 @@ public class FarmResource {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
+        User user = userService
+            .getUserWithAuthoritiesByLogin(userLogin)
+            .orElseThrow(() -> new UserNotFoundException(userLogin));
 
         Farm farm = farmService.getFarm(farmId);
         farmService.checkUserAccess(farm, userLogin);
-        return new FarmDTO(farm);
+        FarmDTO farmDTO = new FarmDTO(farm);
+        farmDTO.setRole(userService.getFarmRole(user, farmId));
+        return farmDTO;
     }
 
     /**
@@ -75,7 +89,7 @@ public class FarmResource {
      * @throws UserDeniedAccessException if the user doesn't have access to the farm, with status {@code 401 (NOT_AUTHORIZED)}
      */
     @GetMapping("/users")
-    public List<UserDTO> getFarmUsers(
+    public List<FarmUserDTO> getFarmUsers(
         @RequestParam("farmId") Long farmId
     ) throws
         UnauthenticatedException,
@@ -88,9 +102,12 @@ public class FarmResource {
 
         Farm farm = farmService.getFarm(farmId);
         farmService.checkUserAccess(farm, userLogin);
-        return farm.getUsers().stream()
-                .map(FarmUsers::getUser)
-                .map(UserDTO::new)
+        return farm.getUsers()
+                .stream()
+                .map((farmUsers) -> new FarmUserDTO(
+                    farmUsers.getUser(),
+                    farmUsers.getRole())
+                )
                 .toList();
     }
 
@@ -120,6 +137,7 @@ public class FarmResource {
      * @throws UnauthenticatedException if the client is unauthenticated, with status {@code 401 (NOT AUTHORIZED)}
      * @throws FarmNotFoundException if the farm doesn't exist, with status {@code 404 (NOT FOUND)}
      * @throws UserDeniedAccessException if the user doesn't have access to the farm, with status {@code 401 (NOT_AUTHORIZED)}
+     * @throws UserNotFoundException if the user doesn't exist, with status {@code 404 (NOT FOUND)}
      */
     @PutMapping("/update")
     public String updateFarm(
@@ -137,12 +155,51 @@ public class FarmResource {
         Farm farm = farmService.getFarm(farmId);
         farmService.checkUserAccess(farm, userLogin);
 
-        // todo add privilege checking
+        // role checking
+        User user = userService
+            .getUserWithAuthoritiesByLogin(userLogin)
+            .orElseThrow(() -> new UserNotFoundException(userLogin));
+        if (userService.getFarmRole(user, farmId) == 3)
+            throw new UserDeniedAccessException(userLogin, farmId);
 
         farmService.update(farm, farmDTO);
         return "Farm updated.";
     }
 
+    /**
+     * {@code PUT /api/farms/roles} : Changes the role of a user.
+     * @param body request body used for getting farm id, user login and the new role
+     * @return status message
+     * @throws UnauthenticatedException with status {@code 401 (NOT AUTHORIZED)}
+     * @throws FarmNotFoundException with status {@code 404 (NOT FOUND)}
+     * @throws UserDeniedAccessException with status {@code 401 (NOT AUTHORIZED)}
+     */
+    @PutMapping("/roles")
+    public ResponseEntity<String> changeUserRole(@RequestBody FarmUserRoleVM body)
+    throws
+        UnauthenticatedException,
+        FarmNotFoundException,
+        UserDeniedAccessException
+    {
+        String authenticatedUserLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(UnauthenticatedException::new);
+
+        Farm farm = farmService.getFarm(body.getFarmId());
+        farmService.checkUserAccess(farm, authenticatedUserLogin);
+
+        User user = userService
+            .getUserWithAuthoritiesByLogin(body.getUserLogin())
+            .orElseThrow(() -> new UserNotFoundException(body.getUserLogin()));
+        User authenticatedUser = userService
+            .getUserWithAuthoritiesByLogin(authenticatedUserLogin)
+            .orElseThrow(() -> new UserNotFoundException(authenticatedUserLogin));
+        if (userService.getFarmRole(authenticatedUser, farm.getId()) == 3)
+            throw new UserDeniedAccessException(authenticatedUserLogin, farm.getId());
+
+        userService.changeUserFarmRole(user, farm.getId(), body.getRole());
+        return ResponseEntity.ok("Role updated");
+    }
 
     /**
      * {@code DELETE /api/farms/delete} : deletes a farm record

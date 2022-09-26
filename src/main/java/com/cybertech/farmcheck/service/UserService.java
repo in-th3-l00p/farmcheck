@@ -2,7 +2,6 @@ package com.cybertech.farmcheck.service;
 
 import com.cybertech.farmcheck.config.Constants;
 import com.cybertech.farmcheck.domain.Authority;
-import com.cybertech.farmcheck.domain.Farm;
 import com.cybertech.farmcheck.domain.FarmUsers;
 import com.cybertech.farmcheck.domain.User;
 import com.cybertech.farmcheck.repository.AuthorityRepository;
@@ -14,6 +13,7 @@ import com.cybertech.farmcheck.service.dto.AdminUserDTO;
 import com.cybertech.farmcheck.service.dto.UserDTO;
 import com.cybertech.farmcheck.service.exception.EmailAlreadyUsedException;
 import com.cybertech.farmcheck.service.exception.InvalidPasswordException;
+import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
 import com.cybertech.farmcheck.service.exception.UsernameAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,6 +64,53 @@ public class UserService {
         this.authorityRepository = authorityRepository;
         this.farmUsersRepository = farmUsersRepository;
         //this.cacheManager = cacheManager;
+    }
+
+    /**
+     * Gets the farm role of a user.
+     * @param user the user entity
+     * @param farmId the farm id
+     * @return the role
+     * @throws {@link UserDeniedAccessException} with status {@code 401 (NOT AUTHORIZED)}
+     */
+    public Short getFarmRole(User user, Long farmId)
+        throws UserDeniedAccessException
+    {
+        return farmUsersRepository
+            .findFarmUsersByUserLoginAndFarmId(
+                user.getLogin(),
+                farmId
+            )
+            .orElseThrow(() -> new UserDeniedAccessException(
+                user.getLogin(),
+                farmId
+            ))
+            .getRole();
+    }
+
+    /**
+     * Changes the farm role of a user
+     * @param user the user entity
+     * @param farmId the farm id
+     * @param role the new role
+     * @throws {@link UserDeniedAccessException} with status {@code 401 (NOT AUTHORIZED)}
+     */
+    public void changeUserFarmRole(User user, Long farmId, Short role)
+        throws UserDeniedAccessException
+    {
+        UserDeniedAccessException exception = new UserDeniedAccessException(
+            user.getLogin(), farmId
+        );
+        FarmUsers farmUsers = farmUsersRepository
+            .findFarmUsersByUserLoginAndFarmId(
+                user.getLogin(),
+                farmId
+            )
+            .orElseThrow(() -> exception);
+        if (farmUsers.getRole() == 1)
+            throw exception;
+        farmUsers.setRole(role);
+        farmUsersRepository.save(farmUsers);
     }
 
     public Optional<User> activateRegistration(String key) {
