@@ -85,7 +85,7 @@ public class PublicUserResource {
      * Delete a user from a farm.
      * @param farmId the id of the farm
      * @param userLogin the removed user's login
-     * @return status message
+     * @return status message with status {@code 200 (OK)}, or with status {@code 500 (BAD REQUEST)} if the removed user is an owner
      */
     @DeleteMapping("/user/removeFarm")
     public ResponseEntity<String> removeUserFromFarm(
@@ -110,11 +110,43 @@ public class PublicUserResource {
         User user = userService
             .getUserWithAuthoritiesByLogin(userLogin)
             .orElseThrow(() -> new UserNotFoundException(userLogin));
-        if (userService.getFarmRole(user, farmId) == 3)
-            throw new UserDeniedAccessException(userLogin, farmId);
+        if (userService.getFarmRole(user, farmId) == 1)
+            return ResponseEntity.badRequest().body("You cannot remove an owner");
 
         farmService.removeUserFromFarm(farm, user);
         return ResponseEntity.ok("User removed.");
+    }
+
+    /**
+     * {@code DELETE /api/user/farms/exit} : Endpoint for exiting a farm.
+     * @param farmId the id of the farm
+     * @return a confirmation message with status {@code 200 (SUCCESS)}, or status {@code 500 {BAD REQUEST}}
+     * @throws UnauthenticatedException with status {@code 401 (NOT AUTHORIZED)}
+     * @throws FarmNotFoundException with status {@code 404 (NOT FOUND)}
+     * @throws UserDeniedAccessException with status {@code 401 (NOT AUTHORIZED)}
+     */
+    @DeleteMapping("/user/farms/exit")
+    public ResponseEntity<String> exitFarm(
+        @RequestParam("farmId") Long farmId
+    ) throws
+        UnauthenticatedException,
+        FarmNotFoundException,
+        UserDeniedAccessException
+    {
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(UnauthenticatedException::new);
+        User user = userService
+            .getUserWithAuthoritiesByLogin(userLogin)
+            .orElseThrow(() -> new UserNotFoundException(userLogin));
+        Farm farm = farmService.getFarm(farmId);
+
+        farmService.checkUserAccess(farm, userLogin);
+        if (userService.getFarmRole(user, farm.getId()) == 1)
+            return ResponseEntity.badRequest().body("Owner cannot exit a farm");
+
+        farmService.removeUserFromFarm(farm, user);
+        return ResponseEntity.ok("You are no longer part of farm " + farmId);
     }
 
     /**

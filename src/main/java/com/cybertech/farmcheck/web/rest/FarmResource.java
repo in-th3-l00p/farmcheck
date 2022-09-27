@@ -220,9 +220,14 @@ public class FarmResource {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
+        User user = userService
+            .getUserWithAuthoritiesByLogin(userLogin)
+            .orElseThrow(() -> new UserNotFoundException(userLogin));
 
         Farm farm = farmService.getFarm(farmId);
         farmService.checkUserAccess(farm, userLogin);
+        if (userService.getFarmRole(user, farmId) != 1)
+            throw new UserDeniedAccessException(userLogin, farmId);
 
         farmService.delete(farm);
         return ResponseEntity.ok("Farm deleted.");
