@@ -49,6 +49,7 @@ public class SensorService {
     public void addSensor(Farm farm, SensorDTO sensorDTO) {
         Sensor sensor = new Sensor(sensorDTO);
         sensor.setToken(sensorTokenGenerator.generateUUID());
+        sensor.setFarm(farm);
         sensorRepository.save(sensor);
     }
 
@@ -83,11 +84,11 @@ public class SensorService {
 
     /**
      * Gets every data entity of a sensor.
-     * @param sensorToken the token of the sensor
+     * @param sensorId the sensor's id
      * @return list of data entities
      */
-    public List<SensorData> getSensorData(String sensorToken) {
-        return sensorDataRepository.findAllSensorDataBySensorToken(sensorToken);
+    public List<SensorData> getSensorData(Long sensorId) {
+        return sensorDataRepository.findAllSensorDataById(sensorId);
     }
 
     /**

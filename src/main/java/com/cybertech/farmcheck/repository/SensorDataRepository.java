@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface SensorDataRepository extends PagingAndSortingRepository<SensorData, Long> {
-    @Query("SELECT d FROM SensorData AS d WHERE d.sensor.token = :token")
-    List<SensorData> findAllSensorDataBySensorToken(@Param("token") String sensorToken);
+    @Query("SELECT d FROM SensorData AS d WHERE d.sensor.id = :sensor_id")
+    List<SensorData> findAllSensorDataById(@Param("sensor_id") Long sensorId);
 }

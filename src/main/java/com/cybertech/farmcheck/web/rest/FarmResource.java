@@ -317,7 +317,7 @@ public class FarmResource {
     @DeleteMapping("/sensor")
     public ResponseEntity<String> deleteFarmSensor(
         @RequestParam("farmId") Long farmId,
-        @RequestParam("sensor") Long sensorId
+        @RequestParam("sensorId") Long sensorId
     ) throws
         UnauthenticatedException,
         FarmNotFoundException,

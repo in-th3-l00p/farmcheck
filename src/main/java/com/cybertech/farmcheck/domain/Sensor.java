@@ -38,7 +38,11 @@ public class Sensor implements Serializable {
     @JoinColumn(name = "farm_id")
     private Farm farm;
 
-    @OneToMany(mappedBy = "sensor")
+    @OneToMany(
+        mappedBy = "sensor",
+        cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER
+    )
     private Set<SensorData> sensorDataSet;
 
     public Sensor() {
@@ -114,7 +118,6 @@ public class Sensor implements Serializable {
             ", description='" + description + '\'' +
             ", addedDate=" + addedDate +
             ", farm=" + farm +
-            ", sensorDataSet=" + sensorDataSet +
             '}';
     }
 }

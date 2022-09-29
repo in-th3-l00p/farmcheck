@@ -47,7 +47,11 @@ import java.util.Set;
     )
     private Set<Message> messages;
 
-    @OneToMany(mappedBy = "farm")
+    @OneToMany(
+        mappedBy = "farm",
+        cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER
+    )
     private Set<Sensor> sensors;
 
     public Farm(String name, byte[] image) {

@@ -1,6 +1,7 @@
 package com.cybertech.farmcheck.service.dto;
 
-import java.time.LocalDate;
+import com.cybertech.farmcheck.domain.SensorData;
+
 import java.time.LocalDateTime;
 
 public class SensorDataDTO {
@@ -13,9 +14,17 @@ public class SensorDataDTO {
 
     private double airTemperature;
 
-    private LocalDateTime localDateTime;
+    private LocalDateTime dateTime;
 
     public SensorDataDTO() {
+    }
+
+    public SensorDataDTO(SensorData sensorData) {
+        soilHumidity = sensorData.getSoilHumidity();
+        airHumidity = sensorData.getAirHumidity();
+        soilTemperature = sensorData.getSoilTemperature();
+        airTemperature = sensorData.getAirTemperature();
+        dateTime = sensorData.getDateTime();
     }
 
     public double getSoilHumidity() {
@@ -50,12 +59,12 @@ public class SensorDataDTO {
         this.airTemperature = airTemperature;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     @Override
@@ -65,7 +74,7 @@ public class SensorDataDTO {
             ", airHumidity=" + airHumidity +
             ", soilTemperature=" + soilTemperature +
             ", airTemperature=" + airTemperature +
-            ", localDateTime=" + localDateTime +
+            ", dateTime=" + dateTime +
             '}';
     }
 }
