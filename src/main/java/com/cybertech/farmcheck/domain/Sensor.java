@@ -1,8 +1,11 @@
 package com.cybertech.farmcheck.domain;
 
+import com.cybertech.farmcheck.service.dto.SensorDTO;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -17,59 +20,101 @@ public class Sensor implements Serializable {
 
     @NotNull
     @Column
-    private Short type;
+    private String token;
 
     @NotNull
     @Column
-    private Double latitude;
+    private String name;
+
+    @NotNull
+    @Column(columnDefinition = "text")
+    private String description;
 
     @NotNull
     @Column
-    private Double longitude;
+    private LocalDate addedDate = LocalDate.now();
+
+    @ManyToOne
+    @JoinColumn(name = "farm_id")
+    private Farm farm;
 
     @OneToMany(mappedBy = "sensor")
-    private Set<FieldSensors> fieldSensors;
+    private Set<SensorData> sensorDataSet;
 
-    public Short getType() {
-        return type;
+    public Sensor() {
     }
 
-    public void setType(Short type) {
-        this.type = type;
+    public Sensor(SensorDTO sensorDTO) {
+        name = sensorDTO.getName();
+        description = sensorDTO.getDescription();
     }
 
-    public Double getLatitude() {
-        return latitude;
+    public Long getId() {
+        return id;
     }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Double getLongitude() {
-        return longitude;
+    public String getToken() {
+        return token;
     }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public Set<FieldSensors> getFieldSensors() {
-        return fieldSensors;
+    public String getName() {
+        return name;
     }
 
-    public void setFieldSensors(Set<FieldSensors> fieldSensors) {
-        this.fieldSensors = fieldSensors;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getAddedDate() {
+        return addedDate;
+    }
+
+    public void setAddedDate(LocalDate addedDate) {
+        this.addedDate = addedDate;
+    }
+
+    public Farm getFarm() {
+        return farm;
+    }
+
+    public void setFarm(Farm farm) {
+        this.farm = farm;
+    }
+
+    public Set<SensorData> getSensorDataSet() {
+        return sensorDataSet;
+    }
+
+    public void setSensorDataSet(Set<SensorData> sensorDataSet) {
+        this.sensorDataSet = sensorDataSet;
     }
 
     @Override
     public String toString() {
-        return "Sensors{" +
+        return "Sensor{" +
             "id=" + id +
-            ", type=" + type +
-            ", latitude=" + latitude +
-            ", longitude=" + longitude +
-            ", fieldSensors=" + fieldSensors +
+            ", token='" + token + '\'' +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", addedDate=" + addedDate +
+            ", farm=" + farm +
+            ", sensorDataSet=" + sensorDataSet +
             '}';
     }
 }

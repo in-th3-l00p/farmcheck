@@ -1,19 +1,24 @@
 package com.cybertech.farmcheck.web.rest;
 
 import com.cybertech.farmcheck.domain.Farm;
+import com.cybertech.farmcheck.domain.Sensor;
 import com.cybertech.farmcheck.domain.User;
 import com.cybertech.farmcheck.security.SecurityUtils;
 import com.cybertech.farmcheck.service.FarmService;
+import com.cybertech.farmcheck.service.SensorService;
 import com.cybertech.farmcheck.service.UserService;
 import com.cybertech.farmcheck.service.dto.FarmDTO;
 import com.cybertech.farmcheck.service.dto.FarmUserDTO;
+import com.cybertech.farmcheck.service.dto.SensorDTO;
 import com.cybertech.farmcheck.service.dto.UserDTO;
 import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
 import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
 import com.cybertech.farmcheck.service.exception.UserNotFoundException;
+import com.cybertech.farmcheck.web.rest.errors.SensorNotFoundException;
 import com.cybertech.farmcheck.web.rest.errors.UnauthenticatedException;
 import com.cybertech.farmcheck.web.rest.vm.FarmUserRoleVM;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,13 +31,17 @@ public class FarmResource {
 
     private final UserService userService;
 
+    private final SensorService sensorService;
+
     @Autowired
     public FarmResource(
         FarmService farmService,
-        UserService userService
+        UserService userService,
+        SensorService sensorService
     ) {
         this.farmService = farmService;
         this.userService = userService;
+        this.sensorService = sensorService;
     }
 
     /**
@@ -80,6 +89,8 @@ public class FarmResource {
         return farmDTO;
     }
 
+
+
     /**
      * {@code GET /api/farms/users} : get the users of a farm
      * @param farmId farm's id
@@ -112,6 +123,35 @@ public class FarmResource {
     }
 
     /**
+     * {@code GET /api/farms/sensor} : get farm's sensors.
+     * @param farmId the farm's id
+     * @return the list of sensors
+     * @throws UnauthenticatedException with status {@code 401 (UNAUTHORIZED)}
+     * @throws FarmNotFoundException if the given farm doesn't exist, with status {@code 404 (NOT FOUND)}
+     * @throws UserDeniedAccessException if the user doesn't have access to the farm, with status {@code 401 (NOT_AUTHORIZED)}
+     */
+    @GetMapping("/sensor")
+    public List<SensorDTO> getFarmSenors(
+        @RequestParam("farmId") Long farmId
+    ) throws
+        UnauthenticatedException,
+        FarmNotFoundException,
+        UserDeniedAccessException
+    {
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(UnauthenticatedException::new);
+
+        Farm farm = farmService.getFarm(farmId);
+        farmService.checkUserAccess(farm, userLogin);
+
+        return farm.getSensors()
+            .stream()
+            .map(SensorDTO::new)
+            .toList();
+    }
+
+    /**
      * {@code POST /api/farms} : create a farm record
      * @param farmDTO the farm's information
      * @return {@link ResponseEntity<String>} with status {@code 200 (OK)}
@@ -128,6 +168,37 @@ public class FarmResource {
         farmService.create(farmDTO, userLogin);
         return ResponseEntity.ok("Farm created.");
     }
+
+    /**
+     * {@code POST /api/farms/sensor} : used for adding a new sensor to a farm.
+     * @param farmId the farm's id
+     * @param sensorDTO the sensor data transfer object
+     * @return message status, with status {@code 201 (CREATED)}
+     * @throws UnauthenticatedException with status {@code 401 (NOT AUTHORIZED)}
+     * @throws FarmNotFoundException with status {@code 404 (NOT FOUND)}
+     * @throws UserDeniedAccessException with status {@code 401 (NOT AUTHORIZED)}
+     */
+    @PostMapping("/sensor")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String addSensor(
+        @RequestParam("farmId") Long farmId,
+        @RequestBody SensorDTO sensorDTO
+    ) throws
+        UnauthenticatedException,
+        FarmNotFoundException,
+        UserDeniedAccessException
+    {
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(UnauthenticatedException::new);
+
+        Farm farm = farmService.getFarm(farmId);
+        farmService.checkUserAccess(farm, userLogin);
+        sensorService.addSensor(farm, sensorDTO);
+
+        return "Sensor added";
+    }
+
 
     /**
      * {@code PUT /api/farms/update} : updates a farm record
@@ -231,5 +302,39 @@ public class FarmResource {
 
         farmService.delete(farm);
         return ResponseEntity.ok("Farm deleted.");
+    }
+
+    /**
+     * {@code DELETE /api/farms/sensor} : deletes a sensor from a farm.
+     * @param farmId the farm's id
+     * @param sensorId the sensor's id
+     * @return message status with status {@code 200 (OK)}
+     * @throws UnauthenticatedException with status {@code 401 (NOT AUTHORIZED)}
+     * @throws FarmNotFoundException with status {@code 404 (NOT FOUND)}
+     * @throws UserDeniedAccessException with status {@code 401 (NOT AUTHORIZED)}
+     * @throws SensorNotFoundException with status {@code 404 (NOT FOUND)}
+     */
+    @DeleteMapping("/sensor")
+    public ResponseEntity<String> deleteFarmSensor(
+        @RequestParam("farmId") Long farmId,
+        @RequestParam("sensor") Long sensorId
+    ) throws
+        UnauthenticatedException,
+        FarmNotFoundException,
+        UserDeniedAccessException,
+        SensorNotFoundException
+    {
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(UnauthenticatedException::new);
+
+        Farm farm = farmService.getFarm(farmId);
+        farmService.checkUserAccess(farm, userLogin);
+
+        Sensor sensor = sensorService
+            .getSensor(sensorId)
+            .orElseThrow(() -> new SensorNotFoundException(sensorId));
+        sensorService.deleteSensor(sensor);
+        return ResponseEntity.ok("Sensor deleted");
     }
 }

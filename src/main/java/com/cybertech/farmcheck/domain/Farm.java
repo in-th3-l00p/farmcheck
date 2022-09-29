@@ -37,13 +37,7 @@ import java.util.Set;
     private Set<FarmUsers> users;
 
     @OneToMany(mappedBy = "farm")
-    private Set<Order> orders;
-
-    @OneToMany(mappedBy = "farm")
     private Set<Task> tasks;
-
-    @OneToMany(mappedBy = "farm")
-    private Set<Field> fields;
 
     @OneToMany(
         mappedBy = "farm",
@@ -52,6 +46,9 @@ import java.util.Set;
         orphanRemoval = true
     )
     private Set<Message> messages;
+
+    @OneToMany(mappedBy = "farm")
+    private Set<Sensor> sensors;
 
     public Farm(String name, byte[] image) {
         this.name = name;
@@ -63,14 +60,6 @@ import java.util.Set;
 
     public Long getId() {
         return id;
-    }
-
-    public Set<Field> getFields() {
-        return fields;
-    }
-
-    public void setFields(Set<Field> fields) {
-        this.fields = fields;
     }
 
     public Set<Task> getTasks() {
@@ -109,20 +98,20 @@ import java.util.Set;
         this.users = users;
     }
 
-    public Set<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
-    }
-
     public Set<Message> getMessages() {
         return messages;
     }
 
     public void setMessages(Set<Message> messages) {
         this.messages = messages;
+    }
+
+    public Set<Sensor> getSensors() {
+        return sensors;
+    }
+
+    public void setSensors(Set<Sensor> sensors) {
+        this.sensors = sensors;
     }
 
     @Override

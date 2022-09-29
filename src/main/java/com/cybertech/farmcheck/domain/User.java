@@ -96,9 +96,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private Set<FarmUsers> farms;
 
     @OneToMany(mappedBy = "user")
-    private Set<Order> orders;
-
-    @OneToMany(mappedBy = "user")
     private Set<UserTasks> userTasks;
 
     public User() {
@@ -231,14 +228,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setFarms(Set<FarmUsers> farms) {
         this.farms = farms;
-    }
-
-    public Set<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
     }
 
     @Override

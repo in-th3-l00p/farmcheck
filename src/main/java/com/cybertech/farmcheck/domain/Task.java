@@ -40,20 +40,8 @@ public class Task implements Serializable {
     @JoinColumn(name = "farm_id")
     private Farm farm;
 
-    @ManyToOne
-    @JoinColumn(name = "field_id")
-    private Field field;
-
     @OneToMany(mappedBy = "task")
     private Set<UserTasks> userTasks;
-
-    public Field getFields() {
-        return field;
-    }
-
-    public void setFields(Field field) {
-        this.field = field;
-    }
 
     public Set<UserTasks> getUserTasks() {
         return userTasks;
@@ -121,7 +109,6 @@ public class Task implements Serializable {
             ", importance=" + importance +
             ", deadline=" + deadline +
             ", farm=" + farm +
-            ", field=" + field +
             '}';
     }
 
