@@ -1,0 +1,234 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet author="cristi (generated)" id="1661805153400-1">
+        <createTable tableName="field_corners">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="field_cornersPK"/>
+            </column>
+            <column name="latitude" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="field_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-2">
+        <createTable tableName="field_seeds">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="field_seedsPK"/>
+            </column>
+            <column name="harvest_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notes" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="planting_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="field_id" type="BIGINT"/>
+            <column name="seed_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-3">
+        <createTable tableName="field_sensors">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="field_sensorsPK"/>
+            </column>
+            <column name="timestamp" type="time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="field_id" type="BIGINT"/>
+            <column name="sensor_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-4">
+        <createTable tableName="fields">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="fieldsPK"/>
+            </column>
+            <column name="farm_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-5">
+        <createTable tableName="order_products">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="order_productsPK"/>
+            </column>
+            <column name="price_then" type="DOUBLE"/>
+            <column name="quantity" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_id" type="BIGINT"/>
+            <column name="product_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-6">
+        <createTable tableName="orders">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ordersPK"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="status" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_price" type="DOUBLE"/>
+            <column name="farm_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-7">
+        <createTable tableName="product_photos">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="product_photosPK"/>
+            </column>
+            <column name="photo" type="LONGBLOB">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-8">
+        <createTable tableName="products">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="productsPK"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="old_price" type="DOUBLE"/>
+            <column name="price" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stock" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-9">
+        <createTable tableName="seeds">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="seedsPK"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="months_for_planting" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="seed_per_m2" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_to_grow" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-10">
+        <createTable tableName="sensors">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="sensorsPK"/>
+            </column>
+            <column name="latitude" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-11">
+        <createTable tableName="tasks">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="tasksPK"/>
+            </column>
+            <column name="deadline" type="datetime(6)"/>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="importance" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="farm_id" type="BIGINT"/>
+            <column name="field_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-12">
+        <createTable tableName="user_tasks">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_tasksPK"/>
+            </column>
+            <column name="task_id" type="BIGINT"/>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-13">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="orders" constraintName="FK32ql8ubntj5uh44ph9659tiih" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-14">
+        <addForeignKeyConstraint baseColumnNames="field_id" baseTableName="field_seeds" constraintName="FK5jklaxovao8l55fv5tiadx8o" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="fields" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-15">
+        <addForeignKeyConstraint baseColumnNames="seed_id" baseTableName="field_seeds" constraintName="FK8yqduuyqkftw98t641kvyyf51" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="seeds" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-16">
+        <addForeignKeyConstraint baseColumnNames="order_id" baseTableName="order_products" constraintName="FKawxpt1ns1sr7al76nvjkv21of" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="orders" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-17">
+        <addForeignKeyConstraint baseColumnNames="field_id" baseTableName="field_corners" constraintName="FKbpgxdmcg2181ne1t0yskon0p" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="fields" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-18">
+        <addForeignKeyConstraint baseColumnNames="task_id" baseTableName="user_tasks" constraintName="FKd365e5kqm9ekl0dhslnnck8f7" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="tasks" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-19">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="order_products" constraintName="FKdxjduvg7991r4qja26fsckxv8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="products" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-20">
+        <addForeignKeyConstraint baseColumnNames="field_id" baseTableName="tasks" constraintName="FKgykj7is2f5q345rtp7jng12by" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="fields" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-21">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="product_photos" constraintName="FKk6euo1c1uosxm44vy24qbw05j" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="products" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-22">
+        <addForeignKeyConstraint baseColumnNames="farm_id" baseTableName="fields" constraintName="FKomv5dbq49wptvwmnlhg4ieubh" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="farms" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-23">
+        <addForeignKeyConstraint baseColumnNames="farm_id" baseTableName="tasks" constraintName="FKr6qsykl0wjynylfspeop9y1wr" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="farms" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-24">
+        <addForeignKeyConstraint baseColumnNames="sensor_id" baseTableName="field_sensors" constraintName="FKr9u6wqw705tniyx4s6boeltaw" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="sensors" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-25">
+        <addForeignKeyConstraint baseColumnNames="farm_id" baseTableName="orders" constraintName="FKrjh89hsr46fex8ir8va8gb3xg" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="farms" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-26">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_tasks" constraintName="FKsrpyfa9asu2ymkcqr7jol85o2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="cristi (generated)" id="1661805153400-27">
+        <addForeignKeyConstraint baseColumnNames="field_id" baseTableName="field_sensors" constraintName="FKt40dixvqv8e7fyg5bw0ddy8jf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="fields" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

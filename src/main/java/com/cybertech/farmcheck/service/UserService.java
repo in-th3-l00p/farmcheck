@@ -2,20 +2,21 @@ package com.cybertech.farmcheck.service;
 
 import com.cybertech.farmcheck.config.Constants;
 import com.cybertech.farmcheck.domain.Authority;
+import com.cybertech.farmcheck.domain.FarmUsers;
 import com.cybertech.farmcheck.domain.User;
 import com.cybertech.farmcheck.repository.AuthorityRepository;
+import com.cybertech.farmcheck.repository.FarmUsersRepository;
 import com.cybertech.farmcheck.repository.UserRepository;
 import com.cybertech.farmcheck.security.AuthoritiesConstants;
 import com.cybertech.farmcheck.security.SecurityUtils;
 import com.cybertech.farmcheck.service.dto.AdminUserDTO;
 import com.cybertech.farmcheck.service.dto.UserDTO;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.cybertech.farmcheck.service.exception.EmailAlreadyUsedException;
+import com.cybertech.farmcheck.service.exception.InvalidPasswordException;
+import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
+import com.cybertech.farmcheck.service.exception.UsernameAlreadyUsedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,6 +24,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.jhipster.security.RandomUtil;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Service class for managing users.
@@ -39,18 +48,69 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    private final CacheManager cacheManager;
+    private final FarmUsersRepository farmUsersRepository;
+
+    //private final CacheManager cacheManager;
 
     public UserService(
         UserRepository userRepository,
         PasswordEncoder passwordEncoder,
         AuthorityRepository authorityRepository,
-        CacheManager cacheManager
+        FarmUsersRepository farmUsersRepository
+        //,CacheManager cacheManager
     ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
-        this.cacheManager = cacheManager;
+        this.farmUsersRepository = farmUsersRepository;
+        //this.cacheManager = cacheManager;
+    }
+
+    /**
+     * Gets the farm role of a user.
+     * @param user the user entity
+     * @param farmId the farm id
+     * @return the role
+     * @throws {@link UserDeniedAccessException} with status {@code 401 (NOT AUTHORIZED)}
+     */
+    public Short getFarmRole(User user, Long farmId)
+        throws UserDeniedAccessException
+    {
+        return farmUsersRepository
+            .findFarmUsersByUserLoginAndFarmId(
+                user.getLogin(),
+                farmId
+            )
+            .orElseThrow(() -> new UserDeniedAccessException(
+                user.getLogin(),
+                farmId
+            ))
+            .getRole();
+    }
+
+    /**
+     * Changes the farm role of a user
+     * @param user the user entity
+     * @param farmId the farm id
+     * @param role the new role
+     * @throws {@link UserDeniedAccessException} with status {@code 401 (NOT AUTHORIZED)}
+     */
+    public void changeUserFarmRole(User user, Long farmId, Short role)
+        throws UserDeniedAccessException
+    {
+        UserDeniedAccessException exception = new UserDeniedAccessException(
+            user.getLogin(), farmId
+        );
+        FarmUsers farmUsers = farmUsersRepository
+            .findFarmUsersByUserLoginAndFarmId(
+                user.getLogin(),
+                farmId
+            )
+            .orElseThrow(() -> exception);
+        if (farmUsers.getRole() == 1)
+            throw exception;
+        farmUsers.setRole(role);
+        farmUsersRepository.save(farmUsers);
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -61,7 +121,7 @@ public class UserService {
                 // activate given user for the registration key.
                 user.setActivated(true);
                 user.setActivationKey(null);
-                this.clearUserCaches(user);
+                //this.clearUserCaches(user);
                 log.debug("Activated user: {}", user);
                 return user;
             });
@@ -76,7 +136,7 @@ public class UserService {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
                 user.setResetDate(null);
-                this.clearUserCaches(user);
+                //this.clearUserCaches(user);
                 return user;
             });
     }
@@ -88,7 +148,7 @@ public class UserService {
             .map(user -> {
                 user.setResetKey(RandomUtil.generateResetKey());
                 user.setResetDate(Instant.now());
-                this.clearUserCaches(user);
+                //this.clearUserCaches(user);
                 return user;
             });
     }
@@ -120,6 +180,7 @@ public class UserService {
         if (userDTO.getEmail() != null) {
             newUser.setEmail(userDTO.getEmail().toLowerCase());
         }
+        newUser.setPhone(userDTO.getPhone());
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
         // new user is not active
@@ -130,7 +191,7 @@ public class UserService {
         authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
-        this.clearUserCaches(newUser);
+        //this.clearUserCaches(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
     }
@@ -141,7 +202,7 @@ public class UserService {
         }
         userRepository.delete(existingUser);
         userRepository.flush();
-        this.clearUserCaches(existingUser);
+        //this.clearUserCaches(existingUser);
         return true;
     }
 
@@ -153,6 +214,7 @@ public class UserService {
         if (userDTO.getEmail() != null) {
             user.setEmail(userDTO.getEmail().toLowerCase());
         }
+        user.setPhone(userDTO.getPhone());
         user.setImageUrl(userDTO.getImageUrl());
         if (userDTO.getLangKey() == null) {
             user.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
@@ -175,7 +237,7 @@ public class UserService {
             user.setAuthorities(authorities);
         }
         userRepository.save(user);
-        this.clearUserCaches(user);
+        //this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
         return user;
     }
@@ -192,13 +254,14 @@ public class UserService {
             .filter(Optional::isPresent)
             .map(Optional::get)
             .map(user -> {
-                this.clearUserCaches(user);
+                //this.clearUserCaches(user);
                 user.setLogin(userDTO.getLogin().toLowerCase());
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
                 if (userDTO.getEmail() != null) {
                     user.setEmail(userDTO.getEmail().toLowerCase());
                 }
+                user.setPhone(userDTO.getPhone());
                 user.setImageUrl(userDTO.getImageUrl());
                 user.setActivated(userDTO.isActivated());
                 user.setLangKey(userDTO.getLangKey());
@@ -211,7 +274,7 @@ public class UserService {
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .forEach(managedAuthorities::add);
-                this.clearUserCaches(user);
+                //this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
                 return user;
             })
@@ -223,7 +286,7 @@ public class UserService {
             .findOneByLogin(login)
             .ifPresent(user -> {
                 userRepository.delete(user);
-                this.clearUserCaches(user);
+                //this.clearUserCaches(user);
                 log.debug("Deleted User: {}", user);
             });
     }
@@ -237,7 +300,7 @@ public class UserService {
      * @param langKey   language key.
      * @param imageUrl  image URL of user.
      */
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
+    public void updateUser(String firstName, String lastName, String email, String phone, String langKey, String imageUrl) {
         SecurityUtils
             .getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
@@ -247,9 +310,10 @@ public class UserService {
                 if (email != null) {
                     user.setEmail(email.toLowerCase());
                 }
+                user.setPhone(phone);
                 user.setLangKey(langKey);
                 user.setImageUrl(imageUrl);
-                this.clearUserCaches(user);
+                //this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
             });
     }
@@ -266,7 +330,7 @@ public class UserService {
                 }
                 String encryptedPassword = passwordEncoder.encode(newPassword);
                 user.setPassword(encryptedPassword);
-                this.clearUserCaches(user);
+                //this.clearUserCaches(user);
                 log.debug("Changed password for User: {}", user);
             });
     }
@@ -279,6 +343,12 @@ public class UserService {
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllPublicUsers(Pageable pageable) {
         return userRepository.findAllByIdNotNullAndActivatedIsTrue(pageable).map(UserDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<UserDTO> getPublicUserByLogin(String login) {
+        Optional<User> user = userRepository.findOneByLogin(login);
+        return user.map(UserDTO::new);
     }
 
     @Transactional(readOnly = true)
@@ -303,7 +373,7 @@ public class UserService {
             .forEach(user -> {
                 log.debug("Deleting not activated user {}", user.getLogin());
                 userRepository.delete(user);
-                this.clearUserCaches(user);
+                //this.clearUserCaches(user);
             });
     }
 
@@ -314,12 +384,5 @@ public class UserService {
     @Transactional(readOnly = true)
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
-    }
-
-    private void clearUserCaches(User user) {
-        Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE)).evict(user.getLogin());
-        if (user.getEmail() != null) {
-            Objects.requireNonNull(cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
-        }
     }
 }

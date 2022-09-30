@@ -2,14 +2,14 @@ package com.cybertech.farmcheck.config;
 
 import java.net.URI;
 import java.util.concurrent.TimeUnit;
-import javax.cache.configuration.MutableConfiguration;
-import javax.cache.expiry.CreatedExpiryPolicy;
-import javax.cache.expiry.Duration;
-import org.redisson.Redisson;
-import org.redisson.config.ClusterServersConfig;
-import org.redisson.config.Config;
-import org.redisson.config.SingleServerConfig;
-import org.redisson.jcache.configuration.RedissonConfiguration;
+//import javax.cache.configuration.MutableConfiguration;
+//import javax.cache.expiry.CreatedExpiryPolicy;
+//import javax.cache.expiry.Duration;
+//import org.redisson.Redisson;
+//import org.redisson.config.ClusterServersConfig;
+//import org.redisson.config.Config;
+//import org.redisson.config.SingleServerConfig;
+//import org.redisson.jcache.configuration.RedissonConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.boot.info.BuildProperties;
@@ -22,14 +22,14 @@ import org.springframework.context.annotation.Configuration;
 import tech.jhipster.config.JHipsterProperties;
 import tech.jhipster.config.cache.PrefixedKeyGenerator;
 
-@Configuration
-@EnableCaching
+//@Configuration
+//@EnableCaching
 public class CacheConfiguration {
 
     private GitProperties gitProperties;
     private BuildProperties buildProperties;
 
-    @Bean
+    /*@Bean
     public javax.cache.configuration.Configuration<Object, Object> jcacheConfiguration(JHipsterProperties jHipsterProperties) {
         MutableConfiguration<Object, Object> jcacheConfig = new MutableConfiguration<>();
 
@@ -101,5 +101,5 @@ public class CacheConfiguration {
     @Bean
     public KeyGenerator keyGenerator() {
         return new PrefixedKeyGenerator(this.gitProperties, this.buildProperties);
-    }
+    }*/
 }

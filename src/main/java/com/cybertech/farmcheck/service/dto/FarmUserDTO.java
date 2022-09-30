@@ -2,14 +2,13 @@ package com.cybertech.farmcheck.service.dto;
 
 import com.cybertech.farmcheck.domain.User;
 
-/**
- * A DTO representing a user, with only the public attributes.
- */
-public class UserDTO {
+public class FarmUserDTO {
 
     private Long id;
 
     private String login;
+
+    private Short farmRole;
 
     private String firstName;
 
@@ -17,13 +16,29 @@ public class UserDTO {
 
     private String imageUrl;
 
-    public UserDTO() {
-        // Empty constructor needed for Jackson. (who tf is Jackson ??)
+    public FarmUserDTO() {
     }
 
-    public UserDTO(User user) {
+    public FarmUserDTO(
+        Long id,
+        String login,
+        Short farmRole,
+        String firstName,
+        String lastName,
+        String imageUrl
+    ) {
+        this.id = id;
+        this.login = login;
+        this.farmRole = farmRole;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.imageUrl = imageUrl;
+    }
+
+    public FarmUserDTO(User user, Short farmRole) {
         this.id = user.getId();
         this.login = user.getLogin();
+        this.farmRole = farmRole;
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.imageUrl = user.getImageUrl();
@@ -43,6 +58,14 @@ public class UserDTO {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public Short getFarmRole() {
+        return farmRole;
+    }
+
+    public void setFarmRole(Short farmRole) {
+        this.farmRole = farmRole;
     }
 
     public String getFirstName() {
@@ -69,13 +92,13 @@ public class UserDTO {
         this.imageUrl = imageUrl;
     }
 
-    // prettier-ignore
     @Override
     public String toString() {
-        return "UserDTO{" +
+        return "FarmUserDTO{" +
             "id=" + id +
             ", login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
+            ", farmRole=" + farmRole +
+            ", fistName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             '}';
