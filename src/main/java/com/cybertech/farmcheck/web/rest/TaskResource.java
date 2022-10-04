@@ -87,7 +87,7 @@ public class TaskResource {
         User authenticatedUser = userService
             .getUserWithAuthorities()
             .orElseThrow(UnauthenticatedException::new);
-        return authenticatedUser.getTasks().stream()
+        return taskService.getUserTasks(authenticatedUser.getId()).stream()
             .map(TaskDTO::new)
             .toList();
     }

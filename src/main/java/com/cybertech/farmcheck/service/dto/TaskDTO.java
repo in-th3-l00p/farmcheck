@@ -16,6 +16,7 @@ public class TaskDTO {
     private LocalDateTime creationDate;
     private LocalDateTime deadline;
     private List<Long> userIds = new ArrayList<>();
+    private Long farmId;
 
     public TaskDTO() {
     }
@@ -29,6 +30,7 @@ public class TaskDTO {
         this.deadline = task.getDeadline();
         for (TaskUsers taskUsers: task.getUsers())
             userIds.add(taskUsers.getUser().getId());
+        this.farmId = task.getFarm().getId();
     }
 
     public TaskDTO(TaskUsers taskUsers) {
@@ -39,6 +41,7 @@ public class TaskDTO {
         this.importance = taskUsers.getTask().getImportance();
         this.creationDate = taskUsers.getTask().getCreationDate();
         this.deadline = taskUsers.getTask().getDeadline();
+        this.farmId = taskUsers.getTask().getFarm().getId();
     }
 
     public Long getId() {
@@ -103,6 +106,14 @@ public class TaskDTO {
 
     public void setUserIds(List<Long> userIds) {
         this.userIds = userIds;
+    }
+
+    public Long getFarmId() {
+        return farmId;
+    }
+
+    public void setFarmId(Long farmId) {
+        this.farmId = farmId;
     }
 
     @Override
