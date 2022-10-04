@@ -36,7 +36,12 @@ import java.util.Set;
     )
     private Set<FarmUsers> users;
 
-    @OneToMany(mappedBy = "farm")
+    @OneToMany(
+        mappedBy = "farm",
+        fetch = FetchType.EAGER,
+        cascade = CascadeType.ALL,
+        orphanRemoval = true
+    )
     private Set<Task> tasks;
 
     @OneToMany(
