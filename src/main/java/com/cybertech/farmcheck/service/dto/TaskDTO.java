@@ -33,6 +33,19 @@ public class TaskDTO {
         this.farmId = task.getFarm().getId();
     }
 
+    public TaskDTO(Task task, boolean status) {
+        this.id = task.getId();
+        this.title = task.getTitle();
+        this.description = task.getDescription();
+        this.importance = task.getImportance();
+        this.creationDate = task.getCreationDate();
+        this.deadline = task.getDeadline();
+        for (TaskUsers taskUsers: task.getUsers())
+            userIds.add(taskUsers.getUser().getId());
+        this.farmId = task.getFarm().getId();
+        this.status = status;
+    }
+
     public TaskDTO(TaskUsers taskUsers) {
         this.id = taskUsers.getTask().getId();
         this.title = taskUsers.getTask().getTitle();

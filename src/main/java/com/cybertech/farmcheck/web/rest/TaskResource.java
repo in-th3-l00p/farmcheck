@@ -2,7 +2,9 @@ package com.cybertech.farmcheck.web.rest;
 
 import com.cybertech.farmcheck.domain.Farm;
 import com.cybertech.farmcheck.domain.Task;
+import com.cybertech.farmcheck.domain.TaskUsers;
 import com.cybertech.farmcheck.domain.User;
+import com.cybertech.farmcheck.security.SecurityUtils;
 import com.cybertech.farmcheck.service.FarmService;
 import com.cybertech.farmcheck.service.TaskService;
 import com.cybertech.farmcheck.service.UserService;
@@ -12,11 +14,15 @@ import com.cybertech.farmcheck.service.exception.TaskNotFoundException;
 import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
 import com.cybertech.farmcheck.web.rest.errors.UnauthenticatedException;
 import com.cybertech.farmcheck.web.rest.vm.CreateTaskVM;
+import com.cybertech.farmcheck.web.rest.vm.TaskStatusVM;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/farms/tasks")
@@ -88,7 +94,12 @@ public class TaskResource {
             .getUserWithAuthorities()
             .orElseThrow(UnauthenticatedException::new);
         return taskService.getUserTasks(authenticatedUser.getId()).stream()
-            .map(TaskDTO::new)
+            .map(task -> {
+                TaskUsers taskUsers = taskService
+                    .getTaskUsers(task, authenticatedUser)
+                    .get();
+                return new TaskDTO(task, taskUsers.getStatus());
+            })
             .toList();
     }
 
@@ -118,6 +129,28 @@ public class TaskResource {
                 authenticatedUser.getLogin(), farm.getId()
             );
         return farm.getTasks().stream().map(TaskDTO::new).toList();
+    }
+
+    /**
+     * {@code GET /api/farms/tasks/status} : gets the status of every user for a task.
+     * @param taskId the task's id
+     * @return the statuses
+     * @throws TaskNotFoundException if the task doesn't exist
+     */
+    @GetMapping("/status")
+    public List<TaskStatusVM> getTaskStatus(
+        @RequestParam("taskId") Long taskId
+    ) throws TaskNotFoundException {
+        Task task = taskService
+            .getTaskById(taskId)
+            .orElseThrow(() -> new TaskNotFoundException(taskId));
+        List<TaskStatusVM> status = new ArrayList<>();
+        for (TaskUsers taskUsers: task.getUsers())
+            status.add(new TaskStatusVM(
+                taskUsers.getUser().getLogin(),
+                taskUsers.getStatus()
+            ));
+        return status;
     }
 
     /**

@@ -66,21 +66,28 @@ public class TaskService {
         return taskRepository.findAllByUserId(userId);
     }
 
+    public Optional<TaskUsers> getTaskUsers(Task task, User user) {
+        return taskUsersRepository.findTaskUsersByTaskAndUser(task, user);
+    }
+
     public void updateTask(Task task) {
         taskRepository.save(task);
     }
 
-    public void finishTask(Long taskId) throws UnauthenticatedException, TaskNotFoundException {
+    public void finishTask(Long taskId) throws
+        UnauthenticatedException,
+        TaskNotFoundException
+    {
         User authenticatedUser = userService
             .getUserWithAuthorities()
             .orElseThrow(UnauthenticatedException::new);
-        TaskUsers taskUsers = authenticatedUser.getTasks().stream()
-            .filter((potentialTaskUsers) -> Objects.equals(
-                potentialTaskUsers.getTask().getId(), taskId)
-            )
-            .findFirst()
+        Task task = getTaskById(taskId)
+            .orElseThrow(() -> new TaskNotFoundException(taskId));
+        TaskUsers taskUsers = taskUsersRepository
+            .findTaskUsersByTaskAndUser(task, authenticatedUser)
             .orElseThrow(() -> new TaskNotFoundException(taskId));
         taskUsers.setStatus(true);
+        taskUsersRepository.save(taskUsers);
     }
 
     /**
