@@ -128,6 +128,7 @@ public class SensorController {
         return sensorService.getSensorData(sensorId)
             .stream()
             .map(SensorDataDTO::new)
+            .limit(10)
             .toList();
     }
 }
