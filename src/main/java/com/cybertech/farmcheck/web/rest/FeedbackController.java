@@ -19,12 +19,8 @@ public class FeedbackController {
     }
 
     @GetMapping
-    public List<FeedbackDTO> getFeedbacks(
-        @RequestParam(value = "page", defaultValue = "0") int page,
-        @RequestParam(value = "size", defaultValue = "5") int size
-    ) {
-        return feedbackService
-            .getFeedbacks(PageRequest.of(page, size))
+    public List<FeedbackDTO> getFeedbacks() {
+        return feedbackService.getFeedbacks()
             .stream()
             .map(FeedbackDTO::new)
             .toList();

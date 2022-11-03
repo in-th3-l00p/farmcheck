@@ -8,6 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FeedbackService {
     private FeedbackRepository feedbackRepository;
@@ -17,8 +19,8 @@ public class FeedbackService {
         this.feedbackRepository = feedbackRepository;
     }
 
-     public Page<Feedback> getFeedbacks(Pageable pageable) {
-        return feedbackRepository.findAll(pageable);
+     public List<Feedback> getFeedbacks() {
+        return (List<Feedback>) feedbackRepository.findAll();
     }
 
     public Long getFeedbackCount() {
