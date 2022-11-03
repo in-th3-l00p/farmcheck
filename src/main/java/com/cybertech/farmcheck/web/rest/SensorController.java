@@ -12,9 +12,14 @@ import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
 import com.cybertech.farmcheck.web.rest.errors.SensorNotFoundException;
 import com.cybertech.farmcheck.web.rest.errors.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.expression.Lists;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -115,17 +120,25 @@ public class SensorController {
     /**
      * {@code GET /api/sensors/data} : gets every {@link SensorData} of a sensor.
      * @param sensorId the sensor's id
+     * @param page current page
+     * @param size page's size
      * @return {@link ResponseEntity<>} the list of sensor data
      * @throws SensorNotFoundException with status {@code 404 (NOT FOUND)}
      */
     @GetMapping("/data")
     public List<SensorDataDTO> getSensorData(
-        @RequestParam("sensorId") Long sensorId
+        @RequestParam("sensorId") Long sensorId,
+        @RequestParam(value = "page", defaultValue = "0") int page,
+        @RequestParam(value = "size", defaultValue = "5") int size
     ) throws SensorNotFoundException {
+        if (size > 10)
+            return List.of();
         if (sensorService.getSensor(sensorId).isEmpty())
             throw new SensorNotFoundException(sensorId);
 
-        return sensorService.getSensorData(sensorId)
+        return sensorService.getSensorData(
+                sensorId, PageRequest.of(page, size, Sort.by("dateTime").descending())
+            )
             .stream()
             .map(SensorDataDTO::new)
             .limit(10)

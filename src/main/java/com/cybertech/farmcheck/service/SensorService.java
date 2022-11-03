@@ -8,9 +8,13 @@ import com.cybertech.farmcheck.repository.SensorRepository;
 import com.cybertech.farmcheck.security.sensor.SensorTokenGenerator;
 import com.cybertech.farmcheck.service.dto.SensorDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -85,10 +89,14 @@ public class SensorService {
     /**
      * Gets every data entity of a sensor.
      * @param sensorId the sensor's id
+     * @param pageable page request
      * @return list of data entities
      */
-    public List<SensorData> getSensorData(Long sensorId) {
-        return sensorDataRepository.findAllSensorDataById(sensorId);
+    public List<SensorData> getSensorData(Long sensorId, PageRequest pageable) {
+        return sensorDataRepository.findAll(pageable)
+            .stream()
+            .filter(data -> Objects.equals(data.getSensor().getId(), sensorId))
+            .toList();
     }
 
     /**
