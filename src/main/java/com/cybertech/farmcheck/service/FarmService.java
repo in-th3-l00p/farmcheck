@@ -1,13 +1,7 @@
 package com.cybertech.farmcheck.service;
 
-import com.cybertech.farmcheck.domain.Farm;
-import com.cybertech.farmcheck.domain.FarmUsers;
-import com.cybertech.farmcheck.domain.Message;
-import com.cybertech.farmcheck.domain.User;
-import com.cybertech.farmcheck.repository.FarmRepository;
-import com.cybertech.farmcheck.repository.FarmUsersRepository;
-import com.cybertech.farmcheck.repository.MessageRepository;
-import com.cybertech.farmcheck.repository.UserRepository;
+import com.cybertech.farmcheck.domain.*;
+import com.cybertech.farmcheck.repository.*;
 import com.cybertech.farmcheck.service.dto.FarmDTO;
 import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
 import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
@@ -26,18 +20,21 @@ public class FarmService {
     private final UserRepository userRepository;
     private final FarmUsersRepository farmUsersRepository;
     private final MessageRepository messageRepository;
+    private final SensorRepository sensorRepository;
 
     @Autowired
     public FarmService(
         FarmRepository farmRepository,
         UserRepository userRepository,
         FarmUsersRepository farmUsersRepository,
-        MessageRepository messageRepository
+        MessageRepository messageRepository,
+        SensorRepository sensorRepository
     ) {
         this.farmRepository = farmRepository;
         this.userRepository = userRepository;
         this.farmUsersRepository = farmUsersRepository;
         this.messageRepository = messageRepository;
+        this.sensorRepository = sensorRepository;
     }
 
     /**
@@ -179,6 +176,12 @@ public class FarmService {
      * @param farm the farm record
      */
     public void delete(Farm farm) {
+        for (FarmUsers farmUsers: farm.getUsers())
+            farmUsersRepository.delete(farmUsers);
+        for (Message message: farm.getMessages())
+            messageRepository.delete(message);
+        for (Sensor sensor: farm.getSensors())
+            sensorRepository.delete(sensor);
         farmRepository.delete(farm);
     }
 }

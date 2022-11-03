@@ -95,18 +95,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<FarmUsers> farms;
 
-    @OneToMany(mappedBy = "user")
-    private Set<UserTasks> userTasks;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<TaskUsers> tasks;
 
     public User() {
-    }
-
-    public Set<UserTasks> getUserTasks() {
-        return userTasks;
-    }
-
-    public void setUserTasks(Set<UserTasks> userTasks) {
-        this.userTasks = userTasks;
     }
 
     public Long getId() {
@@ -228,6 +220,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setFarms(Set<FarmUsers> farms) {
         this.farms = farms;
+    }
+
+    public Set<TaskUsers> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Set<TaskUsers> tasks) {
+        this.tasks = tasks;
     }
 
     @Override

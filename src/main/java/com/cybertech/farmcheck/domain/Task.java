@@ -1,10 +1,12 @@
 package com.cybertech.farmcheck.domain;
 
+import com.cybertech.farmcheck.service.dto.TaskDTO;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -27,28 +29,49 @@ public class Task implements Serializable {
 
     @NotNull
     @Column
-    private Boolean status;
-
-    @NotNull
-    @Column
     private Boolean importance;
 
     @Column
-    private Date deadline;
+    private LocalDateTime creationDate = LocalDateTime.now();
+
+    @Column
+    private LocalDateTime deadline;
 
     @ManyToOne
     @JoinColumn(name = "farm_id")
     private Farm farm;
 
-    @OneToMany(mappedBy = "task")
-    private Set<UserTasks> userTasks;
+    @OneToMany(mappedBy = "task", fetch = FetchType.EAGER)
+    private Set<TaskUsers> users;
 
-    public Set<UserTasks> getUserTasks() {
-        return userTasks;
+    public Task() {
     }
 
-    public void setUserTasks(Set<UserTasks> userTasks) {
-        this.userTasks = userTasks;
+    public Task(
+        String title,
+        String description,
+        Boolean importance,
+        LocalDateTime deadline
+    ) {
+        this.title = title;
+        this.description = description;
+        this.importance = importance;
+        this.deadline = deadline;
+    }
+
+    public Task(TaskDTO taskDTO) {
+        this.title = taskDTO.getTitle();
+        this.description = taskDTO.getDescription();
+        this.importance = taskDTO.getImportance();
+        this.deadline = taskDTO.getDeadline();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -67,14 +90,6 @@ public class Task implements Serializable {
         this.description = description;
     }
 
-    public Boolean getStatus() {
-        return status;
-    }
-
-    public void setStatus(Boolean status) {
-        this.status = status;
-    }
-
     public Boolean getImportance() {
         return importance;
     }
@@ -83,11 +98,19 @@ public class Task implements Serializable {
         this.importance = importance;
     }
 
-    public Date getDeadline() {
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }
 
@@ -99,13 +122,20 @@ public class Task implements Serializable {
         this.farm = farm;
     }
 
+    public Set<TaskUsers> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<TaskUsers> users) {
+        this.users = users;
+    }
+
     @Override
     public String toString() {
         return "Tasks{" +
             "id=" + id +
             ", title='" + title + '\'' +
             ", description='" + description + '\'' +
-            ", status=" + status +
             ", importance=" + importance +
             ", deadline=" + deadline +
             ", farm=" + farm +
