@@ -20,7 +20,7 @@ public class TaskUsers {
 
     @NotNull
     @Column
-    private boolean status;
+    private boolean status = false;
 
     public TaskUsers() {
     }
