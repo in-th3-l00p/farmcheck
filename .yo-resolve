@@ -1,0 +1,2 @@
+src/main/java/com/cybertech/farmcheck/web/rest/errors/ExceptionTranslator.java skip
+src/main/java/com/cybertech/farmcheck/domain/User.java skip

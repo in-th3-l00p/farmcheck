@@ -6,21 +6,28 @@ import com.cybertech.farmcheck.service.dto.FarmDTO;
 import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
 import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
 import com.cybertech.farmcheck.service.exception.UserNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
+import javax.imageio.ImageIO;
+import java.io.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class FarmService {
+    private Logger log = LoggerFactory.getLogger(getClass());
 
     private final FarmRepository farmRepository;
     private final UserRepository userRepository;
     private final FarmUsersRepository farmUsersRepository;
     private final MessageRepository messageRepository;
     private final SensorRepository sensorRepository;
+    private final String defaultFarmImagePath = "static/images/default-farm-picture.png";
 
     @Autowired
     public FarmService(
@@ -94,6 +101,20 @@ public class FarmService {
     }
 
     /**
+     * Gets the default farm image as a byte array
+     * @return the byte array
+     * @throws IOException if it cannot read the file
+     */
+    private byte[] getDefaultFarmPicture() throws IOException {
+        File image = ResourceUtils.getFile("classpath:" + defaultFarmImagePath);
+        FileInputStream fileInputStream = new FileInputStream(image);
+        byte[] bytes = new byte[(int) image.length()];
+        fileInputStream.read(bytes);
+        fileInputStream.close();
+        return bytes;
+    }
+
+    /**
      * Creates a farm record.
      * @param farmDTO the dto from the request
      * @param userLogin the owner's login
@@ -107,7 +128,36 @@ public class FarmService {
             .findOneByLogin(userLogin)
             .orElseThrow(() -> new UserNotFoundException(userLogin));
 
-        Farm farm = new Farm(farmDTO.getName(), farmDTO.getImage());
+        Farm farm = new Farm(
+            farmDTO.getName(),
+            farmDTO.getDescription()
+        );
+
+        // setting farm's picture
+        try {
+            boolean imageSetted = false;
+            if (farmDTO.getImage() != null) { // checking if any image is given
+                InputStream imageInputStream = new ByteArrayInputStream(farmDTO.getImage());
+                if (ImageIO.read(imageInputStream) != null) { // checking if image is valid
+                    log.warn("image loaded from input");
+                    farm.setImage(farmDTO.getImage());
+                    imageSetted = true;
+                }
+            }
+            if (!imageSetted)
+                throw new IOException();
+        } catch (IOException e) {
+            try {
+                log.warn("image loaded as default");
+                farm.setImage(getDefaultFarmPicture());
+            } catch (Exception defaultPictureException) {
+                log.error(
+                    "Error loading the default farm picture\n" +
+                    defaultPictureException.getMessage()
+                );
+            }
+        }
+
         farm = farmRepository.save(farm);
         farmUsersRepository.save(
             new FarmUsers(creator, farm, (short)1)

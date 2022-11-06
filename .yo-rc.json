@@ -40,7 +40,7 @@
     "skipFakeData": false,
     "skipUserManagement": false,
     "testFrameworks": [],
-    "websocket": false,
+    "websocket": "spring-websocket",
     "withAdminUi": true
   }
 }

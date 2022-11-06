@@ -25,6 +25,10 @@ import java.util.Set;
     @Column(length = 100, nullable = false)
     private String name;
 
+    @NotNull
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
     @Lob
     @Column
     private byte[] image;
@@ -59,9 +63,9 @@ import java.util.Set;
     )
     private Set<Sensor> sensors;
 
-    public Farm(String name, byte[] image) {
+    public Farm(String name, String description) {
         this.name = name;
-        this.image = image;
+        this.description = description;
     }
 
     public Farm() {
@@ -89,6 +93,14 @@ import java.util.Set;
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public byte[] getImage() {
@@ -139,7 +151,6 @@ import java.util.Set;
         return "Farm{" +
             "id=" + id +
             ", name='" + name + '\'' +
-            ", image=" + Arrays.toString(image) +
             '}';
     }
 }

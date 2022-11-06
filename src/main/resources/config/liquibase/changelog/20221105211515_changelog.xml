@@ -1,0 +1,39 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <changeSet author="intheloop (generated)" id="1667682918702-12">
+        <addUniqueConstraint columnNames="id" constraintName="UC_MESSAGESID_COL" tableName="messages"/>
+    </changeSet>
+    <changeSet author="intheloop (generated)" id="1667682918702-1">
+        <dropDefaultValue columnDataType="varchar(20)" columnName="activation_key" tableName="users"/>
+    </changeSet>
+    <changeSet author="intheloop (generated)" id="1667682918702-2">
+        <dropDefaultValue columnDataType="clob" columnName="content" tableName="feedback"/>
+    </changeSet>
+    <changeSet author="intheloop (generated)" id="1667682918702-3">
+        <dropDefaultValue columnDataType="varchar(255)" columnName="description" tableName="tasks"/>
+    </changeSet>
+    <changeSet author="intheloop (generated)" id="1667682918702-4">
+        <dropDefaultValue columnDataType="varchar(254)" columnName="email" tableName="users"/>
+    </changeSet>
+    <changeSet author="intheloop (generated)" id="1667682918702-5">
+        <dropDefaultValue columnDataType="varchar(50)" columnName="first_name" tableName="users"/>
+    </changeSet>
+    <changeSet author="intheloop (generated)" id="1667682918702-6">
+        <dropDefaultValue columnDataType="varchar(256)" columnName="image_url" tableName="users"/>
+    </changeSet>
+    <changeSet author="intheloop (generated)" id="1667682918702-7">
+        <dropDefaultValue columnDataType="varchar(10)" columnName="lang_key" tableName="users"/>
+    </changeSet>
+    <changeSet author="intheloop (generated)" id="1667682918702-8">
+        <dropDefaultValue columnDataType="varchar(50)" columnName="last_modified_by" tableName="users"/>
+    </changeSet>
+    <changeSet author="intheloop (generated)" id="1667682918702-9">
+        <dropDefaultValue columnDataType="varchar(50)" columnName="last_name" tableName="users"/>
+    </changeSet>
+    <changeSet author="intheloop (generated)" id="1667682918702-10">
+        <dropDefaultValue columnDataType="varchar(15)" columnName="phone" tableName="users"/>
+    </changeSet>
+    <changeSet author="intheloop (generated)" id="1667682918702-11">
+        <dropDefaultValue columnDataType="varchar(20)" columnName="reset_key" tableName="users"/>
+    </changeSet>
+</databaseChangeLog>

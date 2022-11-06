@@ -4,10 +4,14 @@ import com.cybertech.farmcheck.domain.Farm;
 
 public class FarmDTO {
     private Long id;
+
     private String name;
 
-    private Short role;
+    private String description;
+
     private byte[] image;
+
+    private Short role;
 
     public FarmDTO() {
     }
@@ -15,7 +19,7 @@ public class FarmDTO {
     public FarmDTO(Farm farm){
         this.id = farm.getId();
         this.name = farm.getName();
-        this.image = farm.getImage();
+        this.description = farm.getDescription();
     }
 
     public Long getId() {
@@ -34,12 +38,12 @@ public class FarmDTO {
         this.name = name;
     }
 
-    public Short getRole() {
-        return role;
+    public String getDescription() {
+        return description;
     }
 
-    public void setRole(Short role) {
-        this.role = role;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public byte[] getImage() {
@@ -48,6 +52,14 @@ public class FarmDTO {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public Short getRole() {
+        return role;
+    }
+
+    public void setRole(Short role) {
+        this.role = role;
     }
 
     @Override

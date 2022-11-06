@@ -127,10 +127,10 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>org.redisson</groupId>
             <artifactId>redisson</artifactId>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -160,12 +160,6 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -268,6 +262,10 @@
             <artifactId>spring-boot-starter-undertow</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
         </dependency>
@@ -299,6 +297,10 @@
             <artifactId>metrics-core</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-messaging</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mysql</artifactId>
             <scope>provided</scope>
@@ -312,11 +314,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-websocket</artifactId>
-            <version>2.7.3</version>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
@@ -843,10 +840,10 @@
                                 <changeLogFile>${project.basedir}/src/main/resources/config/liquibase/master.xml</changeLogFile>
                                 <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                                 <driver>com.mysql.cj.jdbc.Driver</driver>
-                                <url>jdbc:mysql://mysql8001.site4now.net/db_a873a4_farmck</url>
-                                <defaultSchemaName>db_a873a4_farmck</defaultSchemaName>
-                                <username>a873a4_farmck</username>
-                                <password>FarmCheck69</password>
+                                <url>jdbc:mysql://localhost:3306/farmcheck</url>
+                                <defaultSchemaName>farmcheck</defaultSchemaName>
+                                <username>root</username>
+                                <password>test12345</password>
                                 <referenceUrl>hibernate:spring:com.cybertech.farmcheck.domain?dialect=org.hibernate.dialect.MySQL8Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                                 <verbose>true</verbose>
                                 <logging>debug</logging>
@@ -872,11 +869,6 @@
                                     <groupId>javax.validation</groupId>
                                     <artifactId>validation-api</artifactId>
                                     <version>${validation-api.version}</version>
-                                </dependency>
-                                <dependency>
-                                    <groupId>org.springframework.boot</groupId>
-                                    <artifactId>spring-boot-starter-websocket</artifactId>
-                                    <version>5.3.23</version>
                                 </dependency>
                             </dependencies>
                         </plugin>
