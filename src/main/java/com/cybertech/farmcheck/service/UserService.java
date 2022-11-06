@@ -68,14 +68,14 @@ public class UserService {
 
     /**
      * Gets the farm role of a user.
-     * @param user the user entity
+     *
+     * @param user   the user entity
      * @param farmId the farm id
      * @return the role
      * @throws {@link UserDeniedAccessException} with status {@code 401 (NOT AUTHORIZED)}
      */
     public Short getFarmRole(User user, Long farmId)
-        throws UserDeniedAccessException
-    {
+        throws UserDeniedAccessException {
         return farmUsersRepository
             .findFarmUsersByUserLoginAndFarmId(
                 user.getLogin(),
@@ -90,14 +90,14 @@ public class UserService {
 
     /**
      * Changes the farm role of a user
-     * @param user the user entity
+     *
+     * @param user   the user entity
      * @param farmId the farm id
-     * @param role the new role
+     * @param role   the new role
      * @throws {@link UserDeniedAccessException} with status {@code 401 (NOT AUTHORIZED)}
      */
     public void changeUserFarmRole(User user, Long farmId, Short role)
-        throws UserDeniedAccessException
-    {
+        throws UserDeniedAccessException {
         UserDeniedAccessException exception = new UserDeniedAccessException(
             user.getLogin(), farmId
         );
@@ -384,6 +384,7 @@ public class UserService {
 
     /**
      * Gets a list of all the authorities.
+     *
      * @return a list of all the authorities.
      */
     @Transactional(readOnly = true)

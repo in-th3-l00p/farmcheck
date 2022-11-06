@@ -47,7 +47,7 @@ public class SinglePageApplicationConfiguration implements WebMvcConfigurer {
             "jpeg",
             "gif",
             "ico",
-			"md"
+            "md"
         );
 
         private List<String> ignoredPaths = Arrays.asList("api");

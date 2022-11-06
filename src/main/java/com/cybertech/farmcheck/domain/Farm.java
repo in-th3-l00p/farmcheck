@@ -12,7 +12,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "farms")
-    public class Farm implements Serializable {
+public class Farm implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -50,7 +50,7 @@ import java.util.Set;
         cascade = CascadeType.ALL,
         orphanRemoval = true
     )
-    private Set<Message> messages;
+    private Set<Chat> chats;
 
     @OneToMany(
         mappedBy = "farm",
@@ -107,12 +107,12 @@ import java.util.Set;
         this.users = users;
     }
 
-    public Set<Message> getMessages() {
-        return messages;
+    public Set<Chat> getChats() {
+        return chats;
     }
 
-    public void setMessages(Set<Message> messages) {
-        this.messages = messages;
+    public void setChats(Set<Chat> chats) {
+        this.chats = chats;
     }
 
     public Set<Sensor> getSensors() {

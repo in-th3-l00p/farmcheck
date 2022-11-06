@@ -1,26 +1,7 @@
 package com.cybertech.farmcheck.config;
 
-import java.net.URI;
-import java.util.concurrent.TimeUnit;
-//import javax.cache.configuration.MutableConfiguration;
-//import javax.cache.expiry.CreatedExpiryPolicy;
-//import javax.cache.expiry.Duration;
-//import org.redisson.Redisson;
-//import org.redisson.config.ClusterServersConfig;
-//import org.redisson.config.Config;
-//import org.redisson.config.SingleServerConfig;
-//import org.redisson.jcache.configuration.RedissonConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.info.GitProperties;
-import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.interceptor.KeyGenerator;
-import org.springframework.context.annotation.*;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import tech.jhipster.config.JHipsterProperties;
-import tech.jhipster.config.cache.PrefixedKeyGenerator;
 
 //@Configuration
 //@EnableCaching

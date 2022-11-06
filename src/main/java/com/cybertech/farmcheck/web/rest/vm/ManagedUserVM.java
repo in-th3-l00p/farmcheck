@@ -1,6 +1,7 @@
 package com.cybertech.farmcheck.web.rest.vm;
 
 import com.cybertech.farmcheck.service.dto.AdminUserDTO;
+
 import javax.validation.constraints.Size;
 
 /**
