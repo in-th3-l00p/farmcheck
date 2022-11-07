@@ -302,11 +302,7 @@ public class FarmResource {
 
         return "Sensor added";
     }
-
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
+    
     /**
      * {@code PUT /api/farms/update} : updates a farm record
      * @param farmId farm's id
