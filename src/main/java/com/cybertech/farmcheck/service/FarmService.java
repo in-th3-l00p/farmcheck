@@ -108,6 +108,7 @@ public class FarmService {
 
     /**
      * Gets the default farm image as a byte array
+     *
      * @return the byte array
      * @throws IOException if it cannot read the file
      */
@@ -160,7 +161,7 @@ public class FarmService {
             } catch (Exception defaultPictureException) {
                 log.error(
                     "Error loading the default farm picture\n" +
-                    defaultPictureException.getMessage()
+                        defaultPictureException.getMessage()
                 );
             }
         }

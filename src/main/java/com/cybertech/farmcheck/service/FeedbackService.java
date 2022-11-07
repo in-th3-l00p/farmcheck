@@ -4,8 +4,6 @@ import com.cybertech.farmcheck.domain.Feedback;
 import com.cybertech.farmcheck.repository.FeedbackRepository;
 import com.cybertech.farmcheck.service.dto.FeedbackDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +17,7 @@ public class FeedbackService {
         this.feedbackRepository = feedbackRepository;
     }
 
-     public List<Feedback> getFeedbacks() {
+    public List<Feedback> getFeedbacks() {
         return (List<Feedback>) feedbackRepository.findAll();
     }
 

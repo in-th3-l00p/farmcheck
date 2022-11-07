@@ -1,8 +1,6 @@
 package com.cybertech.farmcheck.service.dto;
 
 import com.cybertech.farmcheck.domain.Feedback;
-import com.cybertech.farmcheck.service.FeedbackService;
-import org.springframework.stereotype.Service;
 
 public class FeedbackDTO {
     private String email;

@@ -105,9 +105,9 @@ public class ChatController {
      * @param chatId the id of the chat
      * @return the confirmation of the operation {@link ResponseEntity<String>} with status 200
      * @throws UnauthenticatedException  with status {@code 404 (NOT FOUND)}
-     * @throws FarmNotFoundException  with status {@code 401 (UNAUTHORIZED)}
+     * @throws FarmNotFoundException     with status {@code 401 (UNAUTHORIZED)}
      * @throws UserDeniedAccessException with status {@code 401 (UNAUTHORIZED)}
-     * @throws ChatNotFoundException with status {@code 401 (UNAUTHORIZED)}
+     * @throws ChatNotFoundException     with status {@code 401 (UNAUTHORIZED)}
      */
     @DeleteMapping
     public ResponseEntity<String> deleteFarmChat(

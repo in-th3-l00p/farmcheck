@@ -16,10 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.expression.Lists;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -123,8 +120,8 @@ public class SensorController {
      * {@code GET /api/sensors/data} : gets every {@link SensorData} of a sensor.
      *
      * @param sensorId the sensor's id
-     * @param page current page
-     * @param size page's size
+     * @param page     current page
+     * @param size     page's size
      * @return {@link ResponseEntity<>} the list of sensor data
      * @throws SensorNotFoundException with status {@code 404 (NOT FOUND)}
      */

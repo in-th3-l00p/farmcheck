@@ -3,7 +3,6 @@ package com.cybertech.farmcheck.web.rest;
 import com.cybertech.farmcheck.service.FeedbackService;
 import com.cybertech.farmcheck.service.dto.FeedbackDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
