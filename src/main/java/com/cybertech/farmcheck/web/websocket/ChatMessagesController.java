@@ -34,13 +34,13 @@ public class ChatMessagesController {
         @DestinationVariable("chatId") Long chatId,
         @Payload MessageDTO messageDTO
     ) throws ChatNotFoundException, UnauthenticatedException, UserDeniedAccessException {
-        String userLogin = SecurityUtils
-            .getCurrentUserLogin()
-            .orElseThrow(UnauthenticatedException::new);
+//        String userLogin = SecurityUtils
+//            .getCurrentUserLogin()
+//            .orElseThrow(UnauthenticatedException::new);
 
         Chat chat = chatService.getChat(chatId);
 
-        farmService.checkUserAccess(chat.getFarm(), userLogin);
+//        farmService.checkUserAccess(chat.getFarm(), userLogin);
         return new MessageDTO(
             chatService.addMessage(
                 new Message(messageDTO, chat)
