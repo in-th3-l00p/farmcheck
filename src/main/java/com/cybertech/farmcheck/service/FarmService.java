@@ -6,6 +6,7 @@ import com.cybertech.farmcheck.service.dto.FarmDTO;
 import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
 import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
 import com.cybertech.farmcheck.service.exception.UserNotFoundException;
+import com.cybertech.farmcheck.web.rest.errors.UserAlreadyAddedToFarmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,19 @@ public class FarmService {
             if (Objects.equals(farmUsers.getUser().getLogin(), userLogin))
                 return;
         throw new UserDeniedAccessException(userLogin, farm.getId());
+    }
+
+    /**
+     * Checks if a user belongs to a farm.
+     *
+     * @param farm      the farm object
+     * @param userLogin user's login
+     */
+    public void checkUserBelongs(Farm farm, String userLogin)
+        throws UserAlreadyAddedToFarmException {
+        for (FarmUsers farmUsers : farm.getUsers())
+            if (Objects.equals(farmUsers.getUser().getLogin(), userLogin))
+                throw new UserAlreadyAddedToFarmException(userLogin);
     }
 
     /**

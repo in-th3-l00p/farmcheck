@@ -16,6 +16,7 @@ import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
 import com.cybertech.farmcheck.service.exception.UserNotFoundException;
 import com.cybertech.farmcheck.web.rest.errors.SensorNotFoundException;
 import com.cybertech.farmcheck.web.rest.errors.UnauthenticatedException;
+import com.cybertech.farmcheck.web.rest.errors.UserAlreadyAddedToFarmException;
 import com.cybertech.farmcheck.web.rest.vm.FarmUserRoleVM;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -168,7 +169,8 @@ public class FarmResource {
     ) throws
         UnauthenticatedException,
         FarmNotFoundException,
-        UserDeniedAccessException {
+        UserDeniedAccessException,
+        UserAlreadyAddedToFarmException {
         String authenticatedUserLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
@@ -178,6 +180,8 @@ public class FarmResource {
         User user = userService
             .getUserWithAuthoritiesByLogin(userLogin)
             .orElseThrow(() -> new UserNotFoundException(userLogin));
+
+        farmService.checkUserBelongs(farm, userLogin);
 
         farmService.addUserToFarm(farm, user, (short) 3);
 
