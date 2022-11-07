@@ -13,10 +13,9 @@ import com.cybertech.farmcheck.service.exception.FarmNotFoundException;
 import com.cybertech.farmcheck.service.exception.UserDeniedAccessException;
 import com.cybertech.farmcheck.web.rest.errors.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,6 +35,37 @@ public class ChatController {
         this.farmService = farmService;
         this.chatService = chatService;
         this.userService = userService;
+    }
+
+    /**
+     * {@code POST /api/chats} : used for adding a new chat to a farm.
+     *
+     * @param farmId  the farm's id
+     * @param chatDTO the sensor data transfer object
+     * @return message status, with status {@code 201 (CREATED)}
+     * @throws UnauthenticatedException  with status {@code 401 (NOT AUTHORIZED)}
+     * @throws FarmNotFoundException     with status {@code 404 (NOT FOUND)}
+     * @throws UserDeniedAccessException with status {@code 401 (NOT AUTHORIZED)}
+     */
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public String addChat(
+        @RequestParam("farmId") Long farmId,
+        @RequestBody ChatDTO chatDTO
+    ) throws
+        UnauthenticatedException,
+        FarmNotFoundException,
+        UserDeniedAccessException {
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(UnauthenticatedException::new);
+
+        Farm farm = farmService.getFarm(farmId);
+        farmService.checkUserAccess(farm, userLogin);
+
+        chatService.addChat(farm, chatDTO);
+
+        return "Chat added";
     }
 
     /**
@@ -66,6 +96,39 @@ public class ChatController {
             .stream()
             .map(ChatDTO::new)
             .toList();
+    }
+
+    /**
+     * {@code DELETE /api/chats} : deletes a chat of a farm.
+     *
+     * @param farmId the id of the farm
+     * @param chatId the id of the chat
+     * @return the confirmation of the operation {@link ResponseEntity<String>} with status 200
+     * @throws UnauthenticatedException  with status {@code 404 (NOT FOUND)}
+     * @throws FarmNotFoundException  with status {@code 401 (UNAUTHORIZED)}
+     * @throws UserDeniedAccessException with status {@code 401 (UNAUTHORIZED)}
+     * @throws ChatNotFoundException with status {@code 401 (UNAUTHORIZED)}
+     */
+    @DeleteMapping
+    public ResponseEntity<String> deleteFarmChat(
+        @RequestParam("farmId") Long farmId,
+        @RequestParam("chatId") Long chatId
+    ) throws
+        UnauthenticatedException,
+        FarmNotFoundException,
+        UserDeniedAccessException,
+        ChatNotFoundException {
+        String userLogin = SecurityUtils
+            .getCurrentUserLogin()
+            .orElseThrow(UnauthenticatedException::new);
+
+        Farm farm = farmService.getFarm(farmId);
+        farmService.checkUserAccess(farm, userLogin);
+
+        Chat chat = chatService.getChat(chatId);
+
+        chatService.deleteChat(chat);
+        return ResponseEntity.ok("Chat deleted");
     }
 
     /**

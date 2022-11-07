@@ -203,38 +203,6 @@ public class FarmResource {
     }
 
     /**
-     * {@code POST /api/farms/chat} : used for adding a new chat to a farm.
-     *
-     * @param farmId  the farm's id
-     * @param chatDTO the sensor data transfer object
-     * @return message status, with status {@code 201 (CREATED)}
-     * @throws UnauthenticatedException  with status {@code 401 (NOT AUTHORIZED)}
-     * @throws FarmNotFoundException     with status {@code 404 (NOT FOUND)}
-     * @throws UserDeniedAccessException with status {@code 401 (NOT AUTHORIZED)}
-     */
-    @PostMapping("/chat")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String addChat(
-        @RequestParam("farmId") Long farmId,
-        @RequestBody ChatDTO chatDTO
-    ) throws
-        UnauthenticatedException,
-        FarmNotFoundException,
-        UserDeniedAccessException {
-        String userLogin = SecurityUtils
-            .getCurrentUserLogin()
-            .orElseThrow(UnauthenticatedException::new);
-
-        Farm farm = farmService.getFarm(farmId);
-        farmService.checkUserAccess(farm, userLogin);
-
-        chatService.addChat(farm, chatDTO);
-
-        return "Chat added";
-    }
-
-
-    /**
      * {@code PUT /api/farms/update} : updates a farm record
      *
      * @param farmId  farm's id
@@ -370,27 +338,5 @@ public class FarmResource {
             .orElseThrow(() -> new SensorNotFoundException(sensorId));
         sensorService.deleteSensor(sensor);
         return ResponseEntity.ok("Sensor deleted");
-    }
-
-    @DeleteMapping("/chat")
-    public ResponseEntity<String> deleteFarmChat(
-        @RequestParam("farmId") Long farmId,
-        @RequestParam("chatId") Long chatId
-    ) throws
-        UnauthenticatedException,
-        FarmNotFoundException,
-        UserDeniedAccessException,
-        ChatNotFoundException {
-        String userLogin = SecurityUtils
-            .getCurrentUserLogin()
-            .orElseThrow(UnauthenticatedException::new);
-
-        Farm farm = farmService.getFarm(farmId);
-        farmService.checkUserAccess(farm, userLogin);
-
-        Chat chat = chatService.getChat(chatId);
-
-        chatService.deleteChat(chat);
-        return ResponseEntity.ok("Chat deleted");
     }
 }
