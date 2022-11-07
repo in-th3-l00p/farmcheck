@@ -6,13 +6,13 @@ import java.time.LocalDateTime;
 
 public class SensorDataDTO {
 
-    private double soilHumidity;
+    private Integer soilHumidity;
 
-    private double airHumidity;
+    private Integer airHumidity;
 
-    private double soilTemperature;
+    private Integer soilTemperature;
 
-    private double airTemperature;
+    private Integer airTemperature;
 
     private LocalDateTime dateTime;
 
@@ -27,35 +27,35 @@ public class SensorDataDTO {
         dateTime = sensorData.getDateTime();
     }
 
-    public double getSoilHumidity() {
+    public Integer getSoilHumidity() {
         return soilHumidity;
     }
 
-    public void setSoilHumidity(double soilHumidity) {
+    public void setSoilHumidity(Integer soilHumidity) {
         this.soilHumidity = soilHumidity;
     }
 
-    public double getAirHumidity() {
+    public Integer getAirHumidity() {
         return airHumidity;
     }
 
-    public void setAirHumidity(double airHumidity) {
+    public void setAirHumidity(Integer airHumidity) {
         this.airHumidity = airHumidity;
     }
 
-    public double getSoilTemperature() {
+    public Integer getSoilTemperature() {
         return soilTemperature;
     }
 
-    public void setSoilTemperature(double soilTemperature) {
+    public void setSoilTemperature(Integer soilTemperature) {
         this.soilTemperature = soilTemperature;
     }
 
-    public double getAirTemperature() {
+    public Integer getAirTemperature() {
         return airTemperature;
     }
 
-    public void setAirTemperature(double airTemperature) {
+    public void setAirTemperature(Integer airTemperature) {
         this.airTemperature = airTemperature;
     }
 
