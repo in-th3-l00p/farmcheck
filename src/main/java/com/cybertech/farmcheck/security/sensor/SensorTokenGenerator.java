@@ -11,6 +11,7 @@ public class SensorTokenGenerator {
 
     /**
      * Generates a random UUID
+     *
      * @return the uuid as a string
      */
     public String generateUUID() {

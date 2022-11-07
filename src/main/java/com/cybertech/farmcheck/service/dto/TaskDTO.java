@@ -28,7 +28,7 @@ public class TaskDTO {
         this.importance = task.getImportance();
         this.creationDate = task.getCreationDate();
         this.deadline = task.getDeadline();
-        for (TaskUsers taskUsers: task.getUsers())
+        for (TaskUsers taskUsers : task.getUsers())
             userIds.add(taskUsers.getUser().getId());
         this.farmId = task.getFarm().getId();
     }
@@ -40,7 +40,7 @@ public class TaskDTO {
         this.importance = task.getImportance();
         this.creationDate = task.getCreationDate();
         this.deadline = task.getDeadline();
-        for (TaskUsers taskUsers: task.getUsers())
+        for (TaskUsers taskUsers : task.getUsers())
             userIds.add(taskUsers.getUser().getId());
         this.farmId = task.getFarm().getId();
         this.status = status;

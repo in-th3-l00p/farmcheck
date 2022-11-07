@@ -16,7 +16,7 @@ public class FarmDTO {
     public FarmDTO() {
     }
 
-    public FarmDTO(Farm farm){
+    public FarmDTO(Farm farm) {
         this.id = farm.getId();
         this.name = farm.getName();
         this.description = farm.getDescription();

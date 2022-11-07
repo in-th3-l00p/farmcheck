@@ -25,27 +25,32 @@ public class FarmService {
     private final FarmRepository farmRepository;
     private final UserRepository userRepository;
     private final FarmUsersRepository farmUsersRepository;
-    private final MessageRepository messageRepository;
     private final SensorRepository sensorRepository;
     private final String defaultFarmImagePath = "static/images/default-farm-picture.png";
+
+    private final ChatRepository chatRepository;
+    private final ChatService chatService;
 
     @Autowired
     public FarmService(
         FarmRepository farmRepository,
         UserRepository userRepository,
         FarmUsersRepository farmUsersRepository,
-        MessageRepository messageRepository,
-        SensorRepository sensorRepository
+        SensorRepository sensorRepository,
+        ChatRepository chatRepository,
+        ChatService chatService
     ) {
         this.farmRepository = farmRepository;
         this.userRepository = userRepository;
         this.farmUsersRepository = farmUsersRepository;
-        this.messageRepository = messageRepository;
         this.sensorRepository = sensorRepository;
+        this.chatRepository = chatRepository;
+        this.chatService = chatService;
     }
 
     /**
      * Gets a {@link Farm}.
+     *
      * @param farmId farm's id
      * @return the Farm object if found
      * @throws FarmNotFoundException if the farm doesn't exist
@@ -57,6 +62,7 @@ public class FarmService {
 
     /**
      * Gets all the farms of a user.
+     *
      * @param userLogin the username of the user
      * @return a {@link List<FarmDTO>} of the farms
      * @throws UserNotFoundException if the user doesn't exist
@@ -72,7 +78,7 @@ public class FarmService {
             .map(FarmDTO::new)
             .collect(Collectors.toList());
 
-        for(FarmDTO farm : farms)
+        for (FarmDTO farm : farms)
             farm.setRole(
                 farmUsersRepository
                     .findFarmUsersByUserLoginAndFarmId(
@@ -88,12 +94,12 @@ public class FarmService {
 
     /**
      * Checks if a user belongs to a farm.
-     * @param farm the farm object
+     *
+     * @param farm      the farm object
      * @param userLogin user's login
      */
     public void checkUserAccess(Farm farm, String userLogin)
-        throws UserDeniedAccessException
-    {
+        throws UserDeniedAccessException {
         for (FarmUsers farmUsers : farm.getUsers())
             if (Objects.equals(farmUsers.getUser().getLogin(), userLogin))
                 return;
@@ -116,7 +122,8 @@ public class FarmService {
 
     /**
      * Creates a farm record.
-     * @param farmDTO the dto from the request
+     *
+     * @param farmDTO   the dto from the request
      * @param userLogin the owner's login
      * @throws UserNotFoundException if the owner doesn't exist
      */
@@ -160,7 +167,7 @@ public class FarmService {
 
         farm = farmRepository.save(farm);
         farmUsersRepository.save(
-            new FarmUsers(creator, farm, (short)1)
+            new FarmUsers(creator, farm, (short) 1)
         );
     }
 
@@ -177,25 +184,28 @@ public class FarmService {
     }
 
     /**
-     * Adds a message to a farm.
-     * @param message the message object
-     * @return the {@link Message} saved in the db
+     * Adds a chat to a farm.
+     *
+     * @param chat the chat object
+     * @return the {@link Chat} saved in the db
      */
-    public Message addMessage(Message message) {
-        return messageRepository.save(message);
+    public Chat addChat(Chat chat) {
+        return chatRepository.save(chat);
     }
 
     /**
-     * Gets all the messages of a farm
+     * Gets all the chats of a farm
+     *
      * @param farmId the id of the farm
-     * @return the {@link List<Message>} sorted by their send date
+     * @return the {@link List<Chat>}
      */
-    public List<Message> getFarmMessages(Long farmId) {
-        return messageRepository.findByFarmId(farmId);
+    public List<Chat> getFarmChats(Long farmId) {
+        return chatRepository.findByFarmId(farmId);
     }
 
     /**
      * Removes a user from a farm.
+     *
      * @param farm the farm object
      * @param user the user object
      */
@@ -210,7 +220,8 @@ public class FarmService {
 
     /**
      * Updates a farm record.
-     * @param farm the record that is going to be updated
+     *
+     * @param farm    the record that is going to be updated
      * @param farmDTO the dto from the request
      */
     public void update(Farm farm, FarmDTO farmDTO) {
@@ -223,14 +234,15 @@ public class FarmService {
 
     /**
      * Deletes a farm record.
+     *
      * @param farm the farm record
      */
     public void delete(Farm farm) {
-        for (FarmUsers farmUsers: farm.getUsers())
+        for (FarmUsers farmUsers : farm.getUsers())
             farmUsersRepository.delete(farmUsers);
-        for (Message message: farm.getMessages())
-            messageRepository.delete(message);
-        for (Sensor sensor: farm.getSensors())
+        for (Chat chat : farm.getChats())
+            chatService.deleteChat(chat);
+        for (Sensor sensor : farm.getSensors())
             sensorRepository.delete(sensor);
         farmRepository.delete(farm);
     }

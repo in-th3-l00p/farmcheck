@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,7 +37,8 @@ public class TaskService {
 
     /**
      * Adds a task to a farm.
-     * @param farm the farm entity
+     *
+     * @param farm    the farm entity
      * @param usersId the users that have this task
      * @param taskDTO the task data transfer object
      * @return the task entity
@@ -53,7 +53,8 @@ public class TaskService {
                 .orElseThrow(() -> new UserNotFoundException(userId));
             TaskUsers taskUsers = new TaskUsers(task, user, false);
             taskUsersRepository.save(taskUsers);
-        };
+        }
+        ;
 
         return task;
     }
@@ -76,8 +77,7 @@ public class TaskService {
 
     public void finishTask(Long taskId) throws
         UnauthenticatedException,
-        TaskNotFoundException
-    {
+        TaskNotFoundException {
         User authenticatedUser = userService
             .getUserWithAuthorities()
             .orElseThrow(UnauthenticatedException::new);
@@ -92,6 +92,7 @@ public class TaskService {
 
     /**
      * Removes the given task from the db.
+     *
      * @param task the task entity
      */
     public void deleteTask(Task task) {

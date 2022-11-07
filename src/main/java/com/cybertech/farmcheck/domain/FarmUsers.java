@@ -18,7 +18,7 @@ public class FarmUsers implements Serializable {
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name =  "farm_id")
+    @JoinColumn(name = "farm_id")
     private Farm farm;
 
     @Column

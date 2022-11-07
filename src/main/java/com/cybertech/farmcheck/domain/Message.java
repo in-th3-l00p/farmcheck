@@ -24,27 +24,27 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(
-        name = "farm_id",
+        name = "chat_id",
         nullable = false
     )
-    private Farm farm;
+    private Chat chat;
 
     public Message() {
         this.dateTime = LocalDateTime.now();
     }
 
-    public Message(MessageDTO messageDTO, Farm farm) {
+    public Message(MessageDTO messageDTO, Chat chat) {
         sender = messageDTO.getSender();
         text = messageDTO.getText();
-        this.farm = farm;
+        this.chat = chat;
         this.dateTime = LocalDateTime.now();
     }
 
-    public Message(Long id, String sender, String text, Farm farm) {
+    public Message(Long id, String sender, String text, Chat chat) {
         this.id = id;
         this.sender = sender;
         this.text = text;
-        this.farm = farm;
+        this.chat = chat;
         this.dateTime = LocalDateTime.now();
     }
 
@@ -80,11 +80,11 @@ public class Message {
         this.dateTime = dateTime;
     }
 
-    public Farm getFarm() {
-        return farm;
+    public Chat getChat() {
+        return chat;
     }
 
-    public void setFarm(Farm farm) {
-        this.farm = farm;
+    public void setChat(Chat chat) {
+        this.chat = chat;
     }
 }

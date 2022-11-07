@@ -10,8 +10,8 @@ import java.util.List;
 public interface MessageRepository extends PagingAndSortingRepository<Message, Long> {
     @Query(
         "SELECT m FROM Message AS m " +
-        "WHERE m.farm.id = :farm_id " +
-        "ORDER BY m.dateTime ASC"
+            "WHERE m.chat.id = :chat_id " +
+            "ORDER BY m.dateTime ASC"
     )
-    List<Message> findByFarmId(@Param("farm_id") Long farmId);
+    List<Message> findByChatId(@Param("chat_id") Long chatId);
 }

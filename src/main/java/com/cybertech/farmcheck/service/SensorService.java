@@ -47,7 +47,8 @@ public class SensorService {
 
     /**
      * Adds a new sensor to a farm.
-     * @param farm farm entity
+     *
+     * @param farm      farm entity
      * @param sensorDTO the dto of the sensor
      */
     public void addSensor(Farm farm, SensorDTO sensorDTO) {
@@ -59,7 +60,8 @@ public class SensorService {
 
     /**
      * Adds a sensor data entity to a sensor.
-     * @param sensor sensor entity
+     *
+     * @param sensor     sensor entity
      * @param sensorData sensor data entity
      */
     public void addSensorData(Sensor sensor, SensorData sensorData) {
@@ -70,6 +72,7 @@ public class SensorService {
 
     /**
      * Gets a sensor by token.
+     *
      * @param sensorToken the sensor token
      * @return {@link Optional<Sensor>} containing the sensor entity
      */
@@ -79,6 +82,7 @@ public class SensorService {
 
     /**
      * Gets a sensor by id.
+     *
      * @param sensorId the sensor's id
      * @return {@link Optional<Sensor>} containing the sensor entity
      */
@@ -88,6 +92,7 @@ public class SensorService {
 
     /**
      * Gets every data entity of a sensor.
+     *
      * @param sensorId the sensor's id
      * @param pageable page request
      * @return list of data entities
@@ -101,6 +106,7 @@ public class SensorService {
 
     /**
      * Deletes a sensor from the db.
+     *
      * @param sensor the given sensor
      */
     public void deleteSensor(Sensor sensor) {

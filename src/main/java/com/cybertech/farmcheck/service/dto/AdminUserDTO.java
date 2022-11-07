@@ -3,10 +3,14 @@ package com.cybertech.farmcheck.service.dto;
 import com.cybertech.farmcheck.config.Constants;
 import com.cybertech.farmcheck.domain.Authority;
 import com.cybertech.farmcheck.domain.User;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.validation.constraints.*;
 
 /**
  * A DTO representing a user, with his authorities.

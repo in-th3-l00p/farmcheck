@@ -49,11 +49,12 @@ public class PublicUserResource {
 
     /**
      * Adds a user to a farm.
-     * @param farmId the id of the farm
+     *
+     * @param farmId    the id of the farm
      * @param userLogin the added user's username
      * @return status message
-     * @throws UnauthenticatedException with status {@code 401 (UNAUTHORIZED)}
-     * @throws FarmNotFoundException with status {@code 404 (NOT_FOUND)}
+     * @throws UnauthenticatedException  with status {@code 401 (UNAUTHORIZED)}
+     * @throws FarmNotFoundException     with status {@code 404 (NOT_FOUND)}
      * @throws UserDeniedAccessException with status {@code 401 (UNAUTHORIZED)}
      */
     @PutMapping("/user/addFarm")
@@ -63,8 +64,7 @@ public class PublicUserResource {
     ) throws
         UnauthenticatedException,
         FarmNotFoundException,
-        UserDeniedAccessException
-    {
+        UserDeniedAccessException {
         String authenticatedUserLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
@@ -75,7 +75,7 @@ public class PublicUserResource {
             .getUserWithAuthoritiesByLogin(userLogin)
             .orElseThrow(() -> new UserNotFoundException(userLogin));
 
-        farmService.addUserToFarm(farm, user, (short)3);
+        farmService.addUserToFarm(farm, user, (short) 3);
 
         // checking if the user has access to the farm
         return "User added";
@@ -83,7 +83,8 @@ public class PublicUserResource {
 
     /**
      * Delete a user from a farm.
-     * @param farmId the id of the farm
+     *
+     * @param farmId    the id of the farm
      * @param userLogin the removed user's login
      * @return status message with status {@code 200 (OK)}, or with status {@code 500 (BAD REQUEST)} if the removed user is an owner
      */
@@ -94,8 +95,7 @@ public class PublicUserResource {
     ) throws
         UnauthenticatedException,
         FarmNotFoundException,
-        UserDeniedAccessException
-    {
+        UserDeniedAccessException {
         String authenticatedUserLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
@@ -119,10 +119,11 @@ public class PublicUserResource {
 
     /**
      * {@code DELETE /api/user/farms/exit} : Endpoint for exiting a farm.
+     *
      * @param farmId the id of the farm
      * @return a confirmation message with status {@code 200 (SUCCESS)}, or status {@code 500 {BAD REQUEST}}
-     * @throws UnauthenticatedException with status {@code 401 (NOT AUTHORIZED)}
-     * @throws FarmNotFoundException with status {@code 404 (NOT FOUND)}
+     * @throws UnauthenticatedException  with status {@code 401 (NOT AUTHORIZED)}
+     * @throws FarmNotFoundException     with status {@code 404 (NOT FOUND)}
      * @throws UserDeniedAccessException with status {@code 401 (NOT AUTHORIZED)}
      */
     @DeleteMapping("/user/farms/exit")
@@ -131,8 +132,7 @@ public class PublicUserResource {
     ) throws
         UnauthenticatedException,
         FarmNotFoundException,
-        UserDeniedAccessException
-    {
+        UserDeniedAccessException {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
@@ -169,6 +169,7 @@ public class PublicUserResource {
 
     /**
      * {@code GET /user} : get the user that has the login given as param - calling this is allowed for everyone.
+     *
      * @param login user's login
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body of the user.
      */
@@ -189,6 +190,7 @@ public class PublicUserResource {
 
     /**
      * Gets a list of all roles.
+     *
      * @return a string list of all roles.
      */
     @GetMapping("/authorities")

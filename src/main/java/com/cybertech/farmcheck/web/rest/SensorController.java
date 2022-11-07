@@ -42,10 +42,11 @@ public class SensorController {
 
     /**
      * {@code GET /api/sensors} : gets a sensor
+     *
      * @param sensorId the sensor id
      * @return the sensor dto, with status {@code 200 (OK)}
-     * @throws UnauthenticatedException with status {@code 401 (NOT AUTHORIZED)}
-     * @throws SensorNotFoundException with status {@code 404 (NOT FOUND)}
+     * @throws UnauthenticatedException  with status {@code 401 (NOT AUTHORIZED)}
+     * @throws SensorNotFoundException   with status {@code 404 (NOT FOUND)}
      * @throws UserDeniedAccessException with status {@code 401 (NOT AUTHORIZED)}
      */
     @GetMapping
@@ -53,8 +54,7 @@ public class SensorController {
         throws
         UnauthenticatedException,
         SensorNotFoundException,
-        UserDeniedAccessException
-    {
+        UserDeniedAccessException {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
@@ -69,18 +69,18 @@ public class SensorController {
 
     /**
      * {@code GET /api/sensors/farm} : gets the farm of a sensor
+     *
      * @param sensorId the sensor's id
      * @return the farm dto, with status {@code 200 (OK)}
      * @throws UserDeniedAccessException with status {@code 401 (NOT AUTHORIZED)}
-     * @throws SensorNotFoundException with status {@code 404 (NOT FOUND)}
-     * @throws UnauthenticatedException with status {@code 401 (NOT AUTHORIZED)}
+     * @throws SensorNotFoundException   with status {@code 404 (NOT FOUND)}
+     * @throws UnauthenticatedException  with status {@code 401 (NOT AUTHORIZED)}
      */
     @GetMapping("/farm")
     public FarmDTO getSensorFarm(@RequestParam("sensorId") Long sensorId) throws
         UserDeniedAccessException,
         SensorNotFoundException,
-        UnauthenticatedException
-    {
+        UnauthenticatedException {
         String userLogin = SecurityUtils
             .getCurrentUserLogin()
             .orElseThrow(UnauthenticatedException::new);
@@ -94,9 +94,11 @@ public class SensorController {
     }
 
     // todo improve security
+
     /**
      * {@code POST /api/sensors/data} : adds a {@link SensorData} entity to a sensor.
-     * @param sensorToken the sensor's token
+     *
+     * @param sensorToken   the sensor's token
      * @param sensorDataDTO the data's dto
      * @return message, with status {@code 200 (OK)}
      * @throws SensorNotFoundException with status {@code 404 (NOT FOUND)}
@@ -119,6 +121,7 @@ public class SensorController {
 
     /**
      * {@code GET /api/sensors/data} : gets every {@link SensorData} of a sensor.
+     *
      * @param sensorId the sensor's id
      * @param page current page
      * @param size page's size

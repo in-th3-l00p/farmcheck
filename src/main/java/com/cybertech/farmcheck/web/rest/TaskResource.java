@@ -4,7 +4,6 @@ import com.cybertech.farmcheck.domain.Farm;
 import com.cybertech.farmcheck.domain.Task;
 import com.cybertech.farmcheck.domain.TaskUsers;
 import com.cybertech.farmcheck.domain.User;
-import com.cybertech.farmcheck.security.SecurityUtils;
 import com.cybertech.farmcheck.service.FarmService;
 import com.cybertech.farmcheck.service.TaskService;
 import com.cybertech.farmcheck.service.UserService;
@@ -20,9 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/farms/tasks")
@@ -46,7 +43,8 @@ public class TaskResource {
 
     /**
      * {@code POST /api/tasks} : Creates a new task.
-     * @param farmId the task's farm id
+     *
+     * @param farmId       the task's farm id
      * @param createTaskVM contains the list of user ids and the task dto.
      * @return message with status {@code 201 (CREATED)}
      * @throws UnauthenticatedException
@@ -61,8 +59,7 @@ public class TaskResource {
     ) throws
         UnauthenticatedException,
         FarmNotFoundException,
-        UserDeniedAccessException
-    {
+        UserDeniedAccessException {
         User authenticatedUser = userService
             .getUserWithAuthorities()
             .orElseThrow(UnauthenticatedException::new);
@@ -83,13 +80,13 @@ public class TaskResource {
 
     /**
      * {@code GET : /api/tasks} : gets every task of the authenticated user.
+     *
      * @return the {@link List<TaskDTO>} with status {@code 200 (OK)}
      * @throws UnauthenticatedException if the user is not authenticated
      */
     @GetMapping
     public List<TaskDTO> getTasks()
-        throws UnauthenticatedException
-    {
+        throws UnauthenticatedException {
         User authenticatedUser = userService
             .getUserWithAuthorities()
             .orElseThrow(UnauthenticatedException::new);
@@ -105,6 +102,7 @@ public class TaskResource {
 
     /**
      * {@code GET /api/tasks/farm} : gets every task of a farm.
+     *
      * @param farmId farm's id
      * @return the {@link List<TaskDTO>}, with status {@code 200 (OK)}
      * @throws UnauthenticatedException
@@ -117,8 +115,7 @@ public class TaskResource {
     ) throws
         UnauthenticatedException,
         FarmNotFoundException,
-        UserDeniedAccessException
-    {
+        UserDeniedAccessException {
         User authenticatedUser = userService
             .getUserWithAuthorities()
             .orElseThrow(UnauthenticatedException::new);
@@ -133,6 +130,7 @@ public class TaskResource {
 
     /**
      * {@code GET /api/farms/tasks/status} : gets the status of every user for a task.
+     *
      * @param taskId the task's id
      * @return the statuses
      * @throws TaskNotFoundException if the task doesn't exist
@@ -145,7 +143,7 @@ public class TaskResource {
             .getTaskById(taskId)
             .orElseThrow(() -> new TaskNotFoundException(taskId));
         List<TaskStatusVM> status = new ArrayList<>();
-        for (TaskUsers taskUsers: task.getUsers())
+        for (TaskUsers taskUsers : task.getUsers())
             status.add(new TaskStatusVM(
                 taskUsers.getUser().getLogin(),
                 taskUsers.getStatus()
@@ -155,6 +153,7 @@ public class TaskResource {
 
     /**
      * {@code PUT /api/tasks} : updates a user's task as being finished.
+     *
      * @param taskId the task's id
      * @return message, with status {@code 200 (OK)}
      * @throws UnauthenticatedException
@@ -163,15 +162,15 @@ public class TaskResource {
     @PutMapping
     public String finishTask(@Param("taskId") Long taskId) throws
         UnauthenticatedException,
-        TaskNotFoundException
-    {
+        TaskNotFoundException {
         taskService.finishTask(taskId);
         return "Task updated.";
     }
 
     /**
      * {@code PUT /api/tasks/update} : updates a task
-     * @param taskId the task's id
+     *
+     * @param taskId  the task's id
      * @param taskDTO dto containing the new data
      * @return message, with status {@code 200 (OK)}
      * @throws TaskNotFoundException
@@ -207,6 +206,7 @@ public class TaskResource {
 
     /**
      * {@code DELETE : /api/tasks} : deletes a task
+     *
      * @param taskId task's id
      * @return message, with status {@code 200 (OK)}, or status {@code 404 (NOT FOUND)}
      * @throws UnauthenticatedException
@@ -218,8 +218,7 @@ public class TaskResource {
     ) throws
         UnauthenticatedException,
         UserDeniedAccessException,
-        TaskNotFoundException
-    {
+        TaskNotFoundException {
         Task task = taskService.getTaskById(taskId)
             .orElseThrow(() -> new TaskNotFoundException(taskId));
 

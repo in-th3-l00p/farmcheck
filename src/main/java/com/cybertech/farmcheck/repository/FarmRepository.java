@@ -2,7 +2,6 @@ package com.cybertech.farmcheck.repository;
 
 import com.cybertech.farmcheck.domain.Farm;
 import com.cybertech.farmcheck.domain.FarmUsers;
-import com.cybertech.farmcheck.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
