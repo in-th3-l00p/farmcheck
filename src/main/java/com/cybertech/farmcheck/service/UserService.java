@@ -172,7 +172,7 @@ public class UserService {
             });
         User newUser = new User();
         String encryptedPassword = passwordEncoder.encode(password);
-        newUser.setLogin(userDTO.getLogin().toLowerCase());
+        newUser.setLogin(userDTO.getLogin());
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
         newUser.setFirstName(userDTO.getFirstName());
@@ -208,7 +208,7 @@ public class UserService {
 
     public User createUser(AdminUserDTO userDTO) {
         User user = new User();
-        user.setLogin(userDTO.getLogin().toLowerCase());
+        user.setLogin(userDTO.getLogin());
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         if (userDTO.getEmail() != null) {
@@ -255,7 +255,7 @@ public class UserService {
             .map(Optional::get)
             .map(user -> {
                 //this.clearUserCaches(user);
-                user.setLogin(userDTO.getLogin().toLowerCase());
+                user.setLogin(userDTO.getLogin());
                 user.setFirstName(userDTO.getFirstName());
                 user.setLastName(userDTO.getLastName());
                 if (userDTO.getEmail() != null) {
