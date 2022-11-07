@@ -21,25 +21,16 @@ public class SensorService {
     private final SensorRepository sensorRepository;
 
     private final SensorDataRepository sensorDataRepository;
-
-    private final FarmService farmService;
-
-    private final UserService userService;
-
     private final SensorTokenGenerator sensorTokenGenerator;
 
     @Autowired
     public SensorService(
         SensorRepository sensorRepository,
         SensorDataRepository sensorDataRepository,
-        FarmService farmService,
-        UserService userService,
         SensorTokenGenerator sensorTokenGenerator
     ) {
         this.sensorRepository = sensorRepository;
         this.sensorDataRepository = sensorDataRepository;
-        this.farmService = farmService;
-        this.userService = userService;
         this.sensorTokenGenerator = sensorTokenGenerator;
     }
 
