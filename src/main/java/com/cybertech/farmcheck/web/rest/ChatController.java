@@ -98,6 +98,11 @@ public class ChatController {
             .toList();
     }
 
+    @GetMapping("/name")
+    public String getChatName(@RequestParam("chatId") Long chatId) throws ChatNotFoundException {
+        return chatService.getChat(chatId).getName();
+    }
+
     /**
      * {@code DELETE /api/chats} : deletes a chat of a farm.
      *
