@@ -50,18 +50,15 @@ spring:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: cristian.george2112@gmail.com
-    password: lqrlexsdruobpefp
+    host: smtp.mailtrap.io
+    port: 2525
+    username: 8e31808b7839ea
+    password: 733ee41039806f
     protocol: smtp
     tls: true
     properties.mail.smtp:
       auth: true
       starttls.enable: true
-      ssl:
-        trust: smtp.gmail.com
-        checkserveridentity: false
   messages:
     cache-duration: PT1S # 1 second, see the ISO 8601 standard
   thymeleaf:

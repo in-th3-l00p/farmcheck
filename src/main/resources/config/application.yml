@@ -186,7 +186,7 @@ jhipster:
   #   allow-credentials: true
   #   max-age: 1800
   mail:
-    from: cristian.george2112@gmail.com
+    from: c562b0d3-38ac-4edd-9f5e-a1fe7e819324@heroku.com
   api-docs:
     default-include-pattern: ${server.servlet.context-path:}/api/**
     management-include-pattern: ${server.servlet.context-path:}/management/**
